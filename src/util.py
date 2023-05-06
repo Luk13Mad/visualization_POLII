@@ -7,8 +7,6 @@ import os
 def load_data(path):
     if not os.path.isfile(path):
         raise ValueError("Could not find file. Try giving absolute path.")
-    if not path.endswith(".xlsx"):
-        raise ValueError("Must be excel file, ending with .xlsx")
     df_dict = pd.read_excel(path,sheet_name = None)
     HEK_early = df_dict["HEK_early"]
     HEK_late = df_dict["HEK_late"]
