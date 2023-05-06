@@ -44,7 +44,7 @@ def display_dataframe(data):
         'Gene in spot A',
         unique_genes_A)
 
-    unique_genes_B = ["all genes"] + list(data.loc[:,"Gene(B)"].unique())
+    unique_genes_B = ["all genes"] + list(data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].unique())
     gene2 = st.selectbox(
         'Gene in spot B',
         unique_genes_B)
@@ -79,7 +79,7 @@ def display_bargraph(data):
         'Gene in spot A',
         unique_genes_A)
 
-    unique_genes_B = data.loc[:,"Gene(B)"].unique()
+    unique_genes_B = data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].unique()
     gene2 = st.selectbox(
         'Gene in spot B',
         unique_genes_B)
