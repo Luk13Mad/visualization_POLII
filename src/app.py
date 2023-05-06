@@ -46,7 +46,6 @@ def app_body(sidebar_options):
     return None
 
 
-#run using: streamlit run src/app.py -- --data data/Table_S3_Screening_results_AC_03_05_2023.xlsx
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument("--data", type=str, default=None)
