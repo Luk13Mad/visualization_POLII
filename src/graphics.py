@@ -1,6 +1,7 @@
 import streamlit as st
 import altair as alt
 from PIL import Image
+import numpy as np
 
 #main graphics function
 #handle layout here
@@ -91,15 +92,12 @@ def display_bargraph(data):
 
     data = data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)","LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]]
 
-    print(data.melt(id_vars = ["CrRna(A)","CrRNA(B)"],
-                    value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]).groupby("variable").sum())
-
     bar = alt.Chart(data.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
                                 value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]
                             ).groupby(
                                 "variable"
-                            ).mean().reset_index()
+                            ).agg({"value" : np.mean}).reset_index()
                     ).mark_bar(color = "orange").encode(
                             x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"],title = None),
                             y = alt.Y("value",title = "LFC"),
