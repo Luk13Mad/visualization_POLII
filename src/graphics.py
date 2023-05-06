@@ -36,7 +36,7 @@ def display_dataframe(data):
                              value = (LFC_B_min,LFC_B_max),
                              step = 0.001)
     
-    TTTT = st.checkbox('TTTT control',help = "If selected only displays constructs with TTTT control.")
+    TTTT = st.checkbox('TTTT control',help = "If selected removes constructs with TTTT control.")
 
 
     unique_genes_A = ["all genes"] + list(data.loc[:,"Gene(A)"].unique())
@@ -53,7 +53,7 @@ def display_dataframe(data):
     mask_cutoff_A = (data.loc[:,"LFC(A)"] >= LFC_A_cutoff_min) & (data.loc[:,"LFC(A)"] <= LFC_A_cutoff_max)
     mask_cutoff_B = (data.loc[:,"LFC(B)"] >= LFC_B_cutoff_min) & (data.loc[:,"LFC(B)"] <= LFC_B_cutoff_max)
     if TTTT:
-        mask_TTTT = data.loc[:,"TTTT control"] == "yes"
+        mask_TTTT = data.loc[:,"TTTT control"] == "no"
     else:
         mask_TTTT = True
 
