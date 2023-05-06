@@ -99,7 +99,7 @@ def display_bargraph(data):
                                 value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]
                             ).groupby(
                                 "variable"
-                            ).sum().reset_index()
+                            ).mean().reset_index()
                     ).mark_bar(color = "orange").encode(
                             x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"],title = None),
                             y = alt.Y("value",title = "LFC"),
