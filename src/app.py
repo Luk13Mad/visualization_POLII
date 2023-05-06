@@ -48,7 +48,7 @@ def app_body(sidebar_options):
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument("--data", type=str, default="data/Table_S3_Screening_results_AC_03_05_2023.xlsx")
+    parser.add_argument("--data", type=str, default="data/Table_data.xlsx")
     args = parser.parse_args()
     if util.check_password():
         HEK_early,HEK_late,T98G_early,T98G_late,RPE1_early,RPE1_late = util.load_data(args.data)
