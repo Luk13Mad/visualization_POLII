@@ -101,8 +101,8 @@ def display_bargraph(data):
                                 "variable"
                             ).sum().reset_index()
                     ).mark_bar(color = "orange").encode(
-                            x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]),
-                            y = "value",
+                            x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"],title = None),
+                            y = alt.Y("value",title = "LFC"),
                             tooltip = alt.value(None))
     
     scatter = alt.Chart(data.melt(
@@ -110,8 +110,8 @@ def display_bargraph(data):
                                 value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]
                             )
                     ).mark_circle(size = 30,color = "red").encode(
-                        x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]),
-                        y = "value",
+                        x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"],title = None),
+                        y = alt.Y("value",title = "LFC"),
                         tooltip = ["value","CrRna(A)","CrRNA(B)"],
                     )
 
