@@ -38,7 +38,6 @@ def display_dataframe(data):
                              value = (LFC_B_min,LFC_B_max),
                              step = 0.001) 
 
-    #TODO add slider for dLFC cutoff
     dLFC_min = float(data.loc[:,"dLFC(A,B)"].min())
     dLFC_max = float(data.loc[:,"dLFC(A,B)"].max())
     dLFC_cutoff_min,dLFC_cutoff_max = st.slider("Cutoff dLFC",min_value = dLFC_min - 0.01,
@@ -49,12 +48,12 @@ def display_dataframe(data):
     TTTT = st.checkbox('TTTT control',help = "If selected removes constructs with TTTT control.")
 
 
-    unique_genes_A = ["all genes"] + list(data.loc[:,"Gene(A)"].unique()) #TODO sort gene selection
+    unique_genes_A = ["all genes"] + list(data.loc[:,"Gene(A)"].unique().sort_values())
     gene1 = st.selectbox(
         'Gene in spot A',
         unique_genes_A)
 
-    unique_genes_B = ["all genes"] + list(data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].unique())
+    unique_genes_B = ["all genes"] + list(data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].unique().sort_values())
     gene2 = st.selectbox(
         'Gene in spot B',
         unique_genes_B)
