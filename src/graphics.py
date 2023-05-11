@@ -4,6 +4,7 @@ from PIL import Image
 import numpy as np
 import networkx as nx
 import nx_altair as nxa
+import util
 
 #main graphics function
 #handle layout here
@@ -19,7 +20,7 @@ def graphics_main(data):
     display_bargraph(data)
 
     st.markdown("***")
-    st.markdown("# **Network graph** :  \n Constructs containing TTTT control have been excluded for this plot.")
+    st.markdown("# **Network graph** :  \n Constructs containing TTTT control have been excluded for this plot.  \n Edges represent amount of constructs within dLFC threshold.")
     display_networkgraph(data)
 
     st.markdown("***")
@@ -131,32 +132,42 @@ def display_bargraph(data):
 
 
 def display_networkgraph(data):
-    #display graph
-    #one gene gets selected and will be in the middle
-    #other genes with which it is paired will appear as connected nodes
-    #edges represent amount of constructs over certain dLFC threshold
-
     unique_genes = np.unique(data.loc[:,["Gene(A)","Gene(B)"]].values.ravel())
     gene = st.selectbox(
         'Gene to display interactions for',
         unique_genes)
     
+    dLFC_min = float(data.loc[:,"dLFC(A,B)"].min())
+    dLFC_max = float(data.loc[:,"dLFC(A,B)"].max())
+    dLFC_cutoff_min,dLFC_cutoff_max = st.slider("Cutoff dLFC",min_value = dLFC_min - 0.01,
+                             max_value = dLFC_max + 0.01,
+                             value = (dLFC_min,dLFC_max),
+                             step = 0.001,
+                             key = "network_slider") 
+    
     mask_geneA = data.loc[:,"Gene(A)"] == gene
     mask_geneB = data.loc[:,"Gene(B)"] == gene
     mask_TTTT = data.loc[:,"TTTT control"] == "no"
-    combined_mask = mask_TTTT & (mask_geneA | mask_geneB)
+    mask_cutoff_dLFC = (data.loc[:,"dLFC(A,B)"] >= dLFC_cutoff_min) & (data.loc[:,"dLFC(A,B)"] <= dLFC_cutoff_max)
+    combined_mask = mask_TTTT & mask_cutoff_dLFC & (mask_geneA | mask_geneB)
 
-    data = data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)","LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]]
-    
+    data = data.loc[combined_mask,["Gene(A)","Gene(B)","dLFC(A,B)"]]
+    edgelist = util.aggregate_df_to_edgelist(df = data, maingene = gene)
+
     # Generate a random graph
-    G = nx.fast_gnp_random_graph(n=30, p=0.25)
+    G = nx.Graph()
+    if len(edgelist) == 0:
+        G.add_weighted_edges_from([(gene,gene,0)])
+    else:
+        G.add_weighted_edges_from(edgelist)
 
-    # Compute positions for viz.
+
     pos = nx.spring_layout(G)
+    node_labels = {n: n for n in G.nodes()}
+    nx.set_node_attributes(G,node_labels,"name")
 
+    network = nxa.draw_networkx(G=G,pos=pos,node_tooltip = ['name'])
 
-
-    network = nxa.draw_networkx(G=G,pos=pos)
-
+    st.markdown(f"Number of nodes: n = {G.number_of_nodes()}")
     st.altair_chart(network, use_container_width=True)
 

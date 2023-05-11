@@ -43,3 +43,25 @@ def check_password():
     else:
         # Password correct.
         return True
+    
+def aggregate_df_to_edgelist(df : pd.DataFrame,maingene = str,source = "Gene(A)", target = "Gene(B)", edge_attr = "dLFC(A,B)",aggfun = len):
+    edgedict = {}
+    for _,row in df.iterrows():
+        if row[source] == maingene:
+            if row[target] in edgedict:
+                edgedict[row[target]].append(row[edge_attr])
+            else:
+                edgedict.update({row[target]:[row[edge_attr]]})
+        elif row[target] == maingene:
+            if row[source] in edgedict:
+                edgedict[row[source]].append(row[edge_attr])
+            else:
+                edgedict.update({row[source]:[row[edge_attr]]})
+        else:
+            raise ValueError
+        
+    edgelist = []
+    for k in edgedict.keys():
+        edgelist.append((maingene,k,aggfun(edgedict[k])))
+
+    return edgelist
