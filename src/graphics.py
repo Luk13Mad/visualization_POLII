@@ -136,10 +136,17 @@ def display_networkgraph(data):
     #other genes with which it is paired will appear as connected nodes
     #edges represent amount of constructs over certain dLFC threshold
 
-    unique_genes = np.unique(data.loc[:,["Gene(A)","Gene(B)"]].values.flatten())
+    unique_genes = np.unique(data.loc[:,["Gene(A)","Gene(B)"]].values.ravel())
     gene = st.selectbox(
         'Gene to display interactions for',
         unique_genes)
+    
+    mask_geneA = data.loc[:,"Gene(A)"] == gene
+    mask_geneB = data.loc[:,"Gene(B)"] == gene
+    mask_TTTT = data.loc[:,"TTTT control"] == "no"
+    combined_mask = mask_TTTT & (mask_geneA | mask_geneB)
+
+    data = data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)","LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]]
     
     # Generate a random graph
     G = nx.fast_gnp_random_graph(n=30, p=0.25)
