@@ -2,7 +2,8 @@ import streamlit as st
 import altair as alt
 from PIL import Image
 import numpy as np
-#import networkx as nx
+import networkx as nx
+import nx_altair as nxa
 
 #main graphics function
 #handle layout here
@@ -16,6 +17,10 @@ def graphics_main(data):
     st.markdown("***")
     st.markdown("# **Bar graph** :  \n Constructs containing TTTT control have been excluded for this plot.")
     display_bargraph(data)
+
+    st.markdown("***")
+    st.markdown("# **Network graph** :  \n Constructs containing TTTT control have been excluded for this plot.")
+    display_networkgraph(data)
 
     st.markdown("***")
     st.markdown("# **Additional graphics** :")
@@ -125,9 +130,26 @@ def display_bargraph(data):
     st.altair_chart(bar + scatter, use_container_width=True)
 
 
-def display_graph():
+def display_networkgraph(data):
     #display graph
     #one gene gets selected and will be in the middle
     #other genes with which it is paired will appear as connected nodes
     #edges represent amount of constructs over certain dLFC threshold
-    pass
+
+    unique_genes = np.unique(data.loc[:,["Gene(A)","Gene(B)"]].values.flatten())
+    gene = st.selectbox(
+        'Gene to display interactions for',
+        unique_genes)
+    
+    # Generate a random graph
+    G = nx.fast_gnp_random_graph(n=30, p=0.25)
+
+    # Compute positions for viz.
+    pos = nx.spring_layout(G)
+
+
+
+    network = nxa.draw_networkx(G=G,pos=pos)
+
+    st.altair_chart(network, use_container_width=True)
+
