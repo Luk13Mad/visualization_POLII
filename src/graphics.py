@@ -2,7 +2,7 @@ import streamlit as st
 import altair as alt
 from PIL import Image
 import numpy as np
-import networkx as nx
+#import networkx as nx
 
 #main graphics function
 #handle layout here
