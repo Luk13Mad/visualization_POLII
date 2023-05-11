@@ -181,7 +181,15 @@ def display_networkgraph(data):
     node_labels = {n: n for n in G.nodes()}
     nx.set_node_attributes(G,node_labels,"name")
 
-    network = nxa.draw_networkx(G=G,pos=pos,node_tooltip = ['name'],node_label = "name")#,node_color="distance"
+    node_distance = {gene:0}
+    for (s,t,v) in G.edges(data=True):
+        if s == gene:
+            node_distance.update({t:v["weight"]})
+        else:
+            node_distance.update({s:v["weight"]})
+    nx.set_node_attributes(G,node_distance,"distance")
+
+    network = nxa.draw_networkx(G=G,pos=pos,node_tooltip = ['name'],node_label = "name",node_color="distance",font_color = "black",font_size = 18)
 
     st.markdown(f"Number of nodes: n = {G.number_of_nodes()}")
     st.altair_chart(network, use_container_width=True)
