@@ -5,7 +5,7 @@ def app_sidebar():
     with st.sidebar:
         select_cellline = st.selectbox(
         'Which cell line would you like to look at?',
-        ('HEK', 'T98G', 'RPE1') 
+        ("HEK 293T","T98-G","hTert-RPE1")
         )
 
         select_timepoint = st.selectbox(

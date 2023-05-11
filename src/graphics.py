@@ -190,6 +190,7 @@ def display_networkgraph(data):
     nx.set_node_attributes(G,node_distance,"distance")
 
     network = nxa.draw_networkx(G=G,pos=pos,node_tooltip = ['name'],node_label = "name",node_color="distance",font_color = "black",font_size = 18)
+    
 
     st.markdown(f"Number of nodes: n = {G.number_of_nodes()}")
     st.altair_chart(network, use_container_width=True)

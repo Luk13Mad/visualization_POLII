@@ -24,19 +24,19 @@ def main():
 #takes care of routing sidebar selections
 def app_body(sidebar_options):
     match sidebar_options["cell"]:
-        case "T98G":
+        case "T98-G":
             match sidebar_options["TP"]:
                 case "Early":
                     graphics.graphics_main(T98G_early)
                 case "Late":
                     graphics.graphics_main(T98G_late)
-        case "HEK":
+        case "HEK 293T":
             match sidebar_options["TP"]:
                 case "Early":
                     graphics.graphics_main(HEK_early)
                 case "Late":
                     graphics.graphics_main(HEK_late)
-        case "RPE1":
+        case "hTert-RPE1":
             match sidebar_options["TP"]:
                 case "Early":
                     graphics.graphics_main(RPE1_early)
