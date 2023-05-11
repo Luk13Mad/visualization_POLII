@@ -2,6 +2,7 @@ import streamlit as st
 import altair as alt
 from PIL import Image
 import numpy as np
+import networkx as nx
 
 #main graphics function
 #handle layout here
@@ -35,12 +36,20 @@ def display_dataframe(data):
     LFC_B_cutoff_min,LFC_B_cutoff_max = st.slider("Cutoff LFC B",min_value = LFC_B_min - 0.01,
                              max_value = LFC_B_max + 0.01,
                              value = (LFC_B_min,LFC_B_max),
-                             step = 0.001)
+                             step = 0.001) 
+
+    #TODO add slider for dLFC cutoff
+    dLFC_min = float(data.loc[:,"dLFC(A,B)"].min())
+    dLFC_max = float(data.loc[:,"dLFC(A,B)"].max())
+    dLFC_cutoff_min,dLFC_cutoff_max = st.slider("Cutoff dLFC",min_value = dLFC_min - 0.01,
+                             max_value = dLFC_max + 0.01,
+                             value = (dLFC_min,dLFC_max),
+                             step = 0.001) 
     
     TTTT = st.checkbox('TTTT control',help = "If selected removes constructs with TTTT control.")
 
 
-    unique_genes_A = ["all genes"] + list(data.loc[:,"Gene(A)"].unique())
+    unique_genes_A = ["all genes"] + list(data.loc[:,"Gene(A)"].unique()) #TODO sort gene selection
     gene1 = st.selectbox(
         'Gene in spot A',
         unique_genes_A)
@@ -53,6 +62,7 @@ def display_dataframe(data):
     
     mask_cutoff_A = (data.loc[:,"LFC(A)"] >= LFC_A_cutoff_min) & (data.loc[:,"LFC(A)"] <= LFC_A_cutoff_max)
     mask_cutoff_B = (data.loc[:,"LFC(B)"] >= LFC_B_cutoff_min) & (data.loc[:,"LFC(B)"] <= LFC_B_cutoff_max)
+    mask_cutoff_dLFC = (data.loc[:,"dLFC(A,B)"] >= dLFC_cutoff_min) & (data.loc[:,"dLFC(A,B)"] <= dLFC_cutoff_max)
     if TTTT:
         mask_TTTT = data.loc[:,"TTTT control"] == "no"
     else:
@@ -68,7 +78,7 @@ def display_dataframe(data):
     else:
         mask_geneB = data.loc[:,"Gene(B)"] == gene2
 
-    combined_mask = mask_cutoff_A & mask_cutoff_B & mask_TTTT & mask_geneA & mask_geneB
+    combined_mask = mask_cutoff_A & mask_cutoff_B & mask_TTTT & mask_geneA & mask_geneB & mask_cutoff_dLFC
     st.dataframe(data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)",
                                          "LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]].sort_values(["Gene(A)","Gene(B)"]).reset_index(drop=True))
 
@@ -114,3 +124,11 @@ def display_bargraph(data):
                     )
 
     st.altair_chart(bar + scatter, use_container_width=True)
+
+
+def display_graph():
+    #display graph
+    #one gene gets selected and will be in the middle
+    #other genes with which it is paired will appear as connected nodes
+    #edges represent amount of constructs over certain dLFC threshold
+    pass
