@@ -48,12 +48,12 @@ def display_dataframe(data):
     TTTT = st.checkbox('TTTT control',help = "If selected removes constructs with TTTT control.")
 
 
-    unique_genes_A = ["all genes"] + list(data.loc[:,"Gene(A)"].unique().sort_values())
+    unique_genes_A = ["all genes"] + list(data.loc[:,"Gene(A)"].sort_values().unique())
     gene1 = st.selectbox(
         'Gene in spot A',
         unique_genes_A)
 
-    unique_genes_B = ["all genes"] + list(data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].unique().sort_values())
+    unique_genes_B = ["all genes"] + list(data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].sort_values().unique())
     gene2 = st.selectbox(
         'Gene in spot B',
         unique_genes_B)
