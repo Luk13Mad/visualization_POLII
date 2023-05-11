@@ -181,7 +181,7 @@ def display_networkgraph(data):
     node_labels = {n: n for n in G.nodes()}
     nx.set_node_attributes(G,node_labels,"name")
 
-    network = nxa.draw_networkx(G=G,pos=pos,node_tooltip = ['name'])#,node_color="distance"
+    network = nxa.draw_networkx(G=G,pos=pos,node_tooltip = ['name'],node_label = "name")#,node_color="distance"
 
     st.markdown(f"Number of nodes: n = {G.number_of_nodes()}")
     st.altair_chart(network, use_container_width=True)
