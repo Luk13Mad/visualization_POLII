@@ -88,25 +88,28 @@ def display_dataframe_bargraph(data):
     st.markdown("# **Bar graph** :  \n Constructs containing TTTT control have been excluded for this plot.  \n For performance reasons no bargraph will be plotted if for either spot \"all genes\" are selected.")
 
     if gene1 != "all genes" and gene2 != "all genes":
-        bardata = data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)","LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]]
+        bardata = data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)","LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"]]
 
         bar = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
-                                value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]
+                                value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"]
                             ).groupby(
                                 "variable"
                             ).agg({"value" : np.mean}).reset_index()
-                    ).mark_bar(color = "orange").encode(
-                            x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"],title = None),
+                    ).mark_bar().encode(
+                            x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"],title = None),
                             y = alt.Y("value",title = "LFC"),
-                            tooltip = alt.value(None))
+                            tooltip = alt.value(None),
+                            color = alt.Color("variable",
+                                              scale = alt.Scale(domain=["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"],
+                                                                range=['blue', 'grey','green','red'])))
     
         scatter = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
-                                value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]
+                                value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"]
                             )
-                    ).mark_circle(size = 30,color = "red").encode(
-                        x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"],title = None),
+                    ).mark_circle(size = 30,color = "black").encode(
+                        x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"],title = None),
                         y = alt.Y("value",title = "LFC"),
                         tooltip = ["value","CrRna(A)","CrRNA(B)"],
                     )
