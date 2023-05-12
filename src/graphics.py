@@ -90,12 +90,12 @@ def display_dataframe(data):
 
 #display bar chart of selected gene pair
 def display_bargraph(data):
-    unique_genes_A = data.loc[:,"Gene(A)"].unique()
+    unique_genes_A = data.loc[:,"Gene(A)"].sort_values().unique()
     gene1 = st.selectbox(
         'Gene in spot A',
         unique_genes_A)
 
-    unique_genes_B = data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].unique()
+    unique_genes_B = data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].sort_values().unique()
     gene2 = st.selectbox(
         'Gene in spot B',
         unique_genes_B)
