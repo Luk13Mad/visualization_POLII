@@ -182,7 +182,7 @@ def display_networkgraph(data):
     nx.set_edge_attributes(G,springload_dict)
 
 
-    pos = nx.spring_layout(G,name = "springload")
+    pos = nx.spring_layout(G,weight = "springload")
     node_labels = {n: n for n in G.nodes()}
     nx.set_node_attributes(G,node_labels,"name")
 
