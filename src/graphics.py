@@ -84,22 +84,6 @@ def display_dataframe_bargraph(data):
     combined_mask = mask_cutoff_A & mask_cutoff_B & mask_TTTT & mask_geneA & mask_geneB & mask_cutoff_dLFC
     st.dataframe(data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)",
                                          "LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]].sort_values(["Gene(A)","Gene(B)"]).reset_index(drop=True))
-<<<<<<< HEAD
-=======
-
-
-#display bar chart of selected gene pair
-def display_bargraph(data):
-    unique_genes_A = data.loc[:,"Gene(A)"].sort_values().unique()
-    gene1 = st.selectbox(
-        'Gene in spot A',
-        unique_genes_A)
-
-    unique_genes_B = data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].sort_values().unique()
-    gene2 = st.selectbox(
-        'Gene in spot B',
-        unique_genes_B)
->>>>>>> 0a52b46f657bd1252df46d821f3a7332c67b05de
     
     st.markdown("# **Bar graph** :  \n Constructs containing TTTT control have been excluded for this plot.  \n For performance reasons no bargraph will be plotted if for either spot \"all genes\" are selected.")
 
