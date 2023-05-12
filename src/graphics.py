@@ -175,9 +175,14 @@ def display_networkgraph(data):
         G.add_weighted_edges_from([(gene,gene,0)])
     else:
         G.add_weighted_edges_from(edgelist)
+        
+    springload_dict = dict()
+    for (s,t,v) in G.edges(data = True):
+        springload_dict.update({(s,t):{"springload":(1/v["weight"])}})
+    nx.set_edge_attributes(G,springload_dict)
 
 
-    pos = nx.spring_layout(G)
+    pos = nx.spring_layout(G,name = "springload")
     node_labels = {n: n for n in G.nodes()}
     nx.set_node_attributes(G,node_labels,"name")
 
