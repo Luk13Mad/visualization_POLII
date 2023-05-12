@@ -11,17 +11,15 @@ import util
 def graphics_main(data):
     st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
     st.markdown("Visualization for the supplementary data and additional graphics.  \n Based on :  \n TODO CITATION")
-    st.markdown("***")
-    st.markdown("# **Raw data table** :")
-    display_dataframe(data)
 
-    st.markdown("***")
-    st.markdown("# **Bar graph** :  \n Constructs containing TTTT control have been excluded for this plot.")
-    display_bargraph(data)
+    tab1,tab2 = st.tabs(["Raw data","Network graph"])
+    with tab1:
+        st.markdown("# **Raw data table** :")
+        display_dataframe_bargraph(data)
 
-    st.markdown("***")
-    st.markdown("# **Network graph** :  \n Constructs containing TTTT control have been excluded for this plot.  \n Edges represent amount of constructs within dLFC threshold.")
-    display_networkgraph(data)
+    with tab2:
+        st.markdown("# **Network graph** :  \n Constructs containing TTTT control have been excluded for this plot.  \n Edges represent amount of constructs within dLFC threshold.")
+        display_networkgraph(data)
 
     st.markdown("***")
     st.markdown("# **Additional graphics** :")
@@ -29,7 +27,7 @@ def graphics_main(data):
 
 #display dataframe
 #make interaction selection
-def display_dataframe(data):
+def display_dataframe_bargraph(data):
     LFC_A_min = float(data.loc[:,"LFC(A)"].min())
     LFC_A_max = float(data.loc[:,"LFC(A)"].max())
     LFC_A_cutoff_min,LFC_A_cutoff_max = st.slider("Cutoff LFC A",min_value = LFC_A_min - 0.01,
@@ -86,28 +84,13 @@ def display_dataframe(data):
     combined_mask = mask_cutoff_A & mask_cutoff_B & mask_TTTT & mask_geneA & mask_geneB & mask_cutoff_dLFC
     st.dataframe(data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)",
                                          "LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]].sort_values(["Gene(A)","Gene(B)"]).reset_index(drop=True))
-
-
-#display bar chart of selected gene pair
-def display_bargraph(data):
-    unique_genes_A = data.loc[:,"Gene(A)"].unique()
-    gene1 = st.selectbox(
-        'Gene in spot A',
-        unique_genes_A)
-
-    unique_genes_B = data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].unique()
-    gene2 = st.selectbox(
-        'Gene in spot B',
-        unique_genes_B)
     
-    mask_geneA = data.loc[:,"Gene(A)"] == gene1
-    mask_geneB = data.loc[:,"Gene(B)"] == gene2
-    mask_TTTT = data.loc[:,"TTTT control"] == "no"
-    combined_mask = mask_TTTT & mask_geneA & mask_geneB
+    st.markdown("# **Bar graph** :  \n Constructs containing TTTT control have been excluded for this plot.  \n For performance reasons no bargraph will be plotted if for either spot \"all genes\" are selected.")
 
-    data = data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)","LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]]
+    if gene1 != "all genes" and gene2 != "all genes":
+        bardata = data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)","LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]]
 
-    bar = alt.Chart(data.melt(
+        bar = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
                                 value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]
                             ).groupby(
@@ -118,7 +101,7 @@ def display_bargraph(data):
                             y = alt.Y("value",title = "LFC"),
                             tooltip = alt.value(None))
     
-    scatter = alt.Chart(data.melt(
+        scatter = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
                                 value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]
                             )
@@ -128,7 +111,7 @@ def display_bargraph(data):
                         tooltip = ["value","CrRna(A)","CrRNA(B)"],
                     )
 
-    st.altair_chart(bar + scatter, use_container_width=True)
+        st.altair_chart(bar + scatter, use_container_width=True)
 
 
 def display_networkgraph(data):
