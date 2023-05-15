@@ -85,12 +85,21 @@ def display_dataframe_bargraph(data):
     st.dataframe(data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)",
                                          "LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]].sort_values(["Gene(A)","Gene(B)"]).reset_index(drop=True))
     
-    st.markdown("# **Bar graph** :  \n Constructs containing TTTT control have been excluded for this plot.  \n For performance reasons no bargraph will be plotted if for either spot \"all genes\" are selected.")
+    st.markdown("# **Bar graph** :  \n Constructs containing TTTT control have been excluded for this plot.")
 
     if gene1 != "all genes" and gene2 != "all genes":
         bardata = data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)","LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]]
+        display_big_bargraph(bardata)
+        display_dLFC_bargraph(bardata)
+    else:
+        st.markdown("**For performance reasons no bargraph will be plotted if for either spot \"all genes\" are selected.**")
 
-        bar = alt.Chart(bardata.melt(
+
+
+        
+
+def display_big_bargraph(bardata):
+    bar = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
                                 value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"]
                             ).groupby(
@@ -104,7 +113,7 @@ def display_dataframe_bargraph(data):
                                               scale = alt.Scale(domain=["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"],
                                                                 range=['blue', 'grey','green','red'])))
     
-        scatter = alt.Chart(bardata.melt(
+    scatter = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
                                 value_vars = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"]
                             )
@@ -114,10 +123,12 @@ def display_dataframe_bargraph(data):
                         tooltip = ["value","CrRna(A)","CrRNA(B)"],
                     )
 
-        st.altair_chart(bar + scatter, use_container_width=True)
+    st.altair_chart(bar + scatter, use_container_width=True)
 
 
-        bar_dLFC = alt.Chart(bardata.melt(
+def display_dLFC_bargraph(bardata):
+    #for color transform just add column to bardata
+    bar_dLFC = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
                                 value_vars = ["dLFC(A,B)"]
                             ).groupby(
@@ -126,12 +137,9 @@ def display_dataframe_bargraph(data):
                     ).mark_bar().encode(
                             x = alt.X("variable",sort = ["dLFC(A,B)"],title = None),
                             y = alt.Y("value",title = "LFC"),
-                            tooltip = alt.value(None),
-                            color = alt.Color("variable",
-                                              scale = alt.Scale(domain=["dLFC(A,B)"],
-                                                                range=['brown'])))
+                            tooltip = alt.value(None)) #bin=alt.Bin(step=threshold), scale=alt.Scale(domain=[0, threshold], range=["#1f77b4", "#ff7f0e"]), legend=None
     
-        scatter_dLFC = alt.Chart(bardata.melt(
+    scatter_dLFC = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
                                 value_vars = ["dLFC(A,B)"]
                             )
@@ -141,7 +149,7 @@ def display_dataframe_bargraph(data):
                         tooltip = ["value","CrRna(A)","CrRNA(B)"],
                     )
 
-        st.altair_chart(bar_dLFC + scatter_dLFC, use_container_width=True)
+    st.altair_chart(bar_dLFC + scatter_dLFC, use_container_width=True)
 
 def display_networkgraph(data):
     unique_genes = np.unique(data.loc[:,["Gene(A)","Gene(B)"]].values.ravel())
