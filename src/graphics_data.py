@@ -136,22 +136,17 @@ def display_big_bargraph(bardata):
 
 
 def display_dLFC_bargraph(bardata):
-    agg_bardata = bardata.melt(
-                                id_vars = ["CrRna(A)","CrRNA(B)"],
-                                value_vars = ["dLFC(A,B)"]
-                            ).groupby(
-                                "variable"
-                            ).agg({"value" : np.mean}).reset_index()
+    agg_bardata = bardata.melt(id_vars = ["CrRna(A)","CrRNA(B)"],
+                                value_vars = ["dLFC(A,B)"]).groupby("variable").agg({"value" : np.mean}).reset_index()
     agg_bardata["color"] = agg_bardata.loc[:,"value"].apply(lambda x: "sickness" if x <= -0.5 else ("buffering" if x >= 0.5 else "neutral"))
 
-    bar_dLFC = alt.Chart(agg_bardata
-                    ).mark_bar().encode(
-                            x = alt.X("variable",sort = ["dLFC(A,B)"],title = None),
+    bar_dLFC = alt.Chart(agg_bardata).mark_bar().encode(
+                            x = alt.X("variable",title = None),
                             y = alt.Y("value",title = "dLFC"),
                             tooltip = alt.value(None),
                             color = alt.Color("color:N",scale = alt.Scale(
                                                                 domain = ["sickness","buffering","neutral"],
-                                                                range = ["#ff581a", "#00adff","sand"]),
+                                                                range = ["#ff581a", "#00adff","#ffd78f"]),
                                                 title = "Effect"))
     
     scatter_dLFC = alt.Chart(bardata.melt(
@@ -164,7 +159,7 @@ def display_dLFC_bargraph(bardata):
                         tooltip = ["value","CrRna(A)","CrRNA(B)"],
                     )
 
-    st.altair_chart(bar_dLFC + scatter_dLFC, use_container_width=True)
+    st.altair_chart(bar_dLFC  + scatter_dLFC, use_container_width=True)
 
 def display_networkgraph(data):
     unique_genes = np.unique(data.loc[:,["Gene(A)","Gene(B)"]].values.ravel())
