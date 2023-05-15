@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 To run the app locally place the data in the data folder and run : </br>
 ```
-streamlit run src/app.py -- --data data/Table_data.xlsx
+streamlit run src/Homepage.py
 ```
 
 Tested with python 3.10.11

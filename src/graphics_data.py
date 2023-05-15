@@ -15,7 +15,7 @@ def graphics_main(data):
     tab1,tab2,tab3,tab4 = st.tabs(["Network graph","Raw data","FAQ","Additional graphics"])
     
     with tab1:
-        st.markdown("## Network graph :  \n Constructs containing TTTT control have been excluded for this plot.  \n Node colors represent amount of constructs within dLFC threshold.")
+        st.markdown("## Network graph :  \n Constructs containing TTTT control have been excluded for this plot.")
         display_networkgraph(data)
 
     with tab2:
@@ -101,7 +101,7 @@ def display_dataframe_bargraph(data):
         display_big_bargraph(bardata)
         display_dLFC_bargraph(bardata)
     else:
-        st.markdown("**For performance reasons no bargraph will be plotted if for either spot \"all genes\" are selected.**")
+        st.markdown("**For performance reasons no bargraph will be plotted if for either spot all genes are selected.**")
 
 
 
@@ -198,14 +198,14 @@ def display_networkgraph(data):
                              key = "network_slider_dLFC",
                              help = "negative dLFCs = synthetic sickness, positive dLFCs = buffering") 
     
-    
     mask_TTTT = data.loc[:,"TTTT control"] == "no"
-    mask_cutoff_selected = (data.loc[mask_geneA,"LFC(A)"] >= LFC_selected_cutoff_min) & (data.loc[mask_geneA,"LFC(A)"] <= LFC_selected_cutoff_max) | (data.loc[mask_geneB,"LFC(B)"] >= LFC_selected_cutoff_min) & (data.loc[mask_geneB,"LFC(B)"] <= LFC_selected_cutoff_max)
-    mask_cutoff_other = (data.loc[mask_geneA,"LFC(B)"] >= LFC_other_cutoff_min) & (data.loc[mask_geneA,"LFC(B)"] <= LFC_other_cutoff_max) | (data.loc[mask_geneB,"LFC(A)"] >= LFC_other_cutoff_min) & (data.loc[mask_geneB,"LFC(A)"] <= LFC_other_cutoff_max)
+    mask_cutoff_selected = ((data.loc[:,"LFC(A)"] >= LFC_selected_cutoff_min) & (data.loc[:,"LFC(A)"] <= LFC_selected_cutoff_max)) | ((data.loc[:,"LFC(B)"] >= LFC_selected_cutoff_min) & (data.loc[:,"LFC(B)"] <= LFC_selected_cutoff_max))
+    mask_cutoff_other = ((data.loc[:,"LFC(B)"] >= LFC_other_cutoff_min) & (data.loc[:,"LFC(B)"] <= LFC_other_cutoff_max)) | ((data.loc[:,"LFC(A)"] >= LFC_other_cutoff_min) & (data.loc[:,"LFC(A)"] <= LFC_other_cutoff_max))
     mask_cutoff_dLFC = (data.loc[:,"dLFC(A,B)"] >= dLFC_cutoff_min) & (data.loc[:,"dLFC(A,B)"] <= dLFC_cutoff_max)
     combined_mask = mask_TTTT & mask_cutoff_selected & mask_cutoff_other & mask_cutoff_dLFC & mask_gene
 
     data = data.loc[combined_mask,["Gene(A)","Gene(B)","dLFC(A,B)"]]
+    
     edgelist = util.aggregate_df_to_edgelist(df = data, maingene = gene)
 
     # Generate graph
@@ -241,7 +241,7 @@ def display_networkgraph(data):
                                 font_color = "black",font_size = 18)
     
 
-    st.markdown(f"Number of nodes: n = {G.number_of_nodes()}")
+    st.markdown(f"Number of nodes: n = {G.number_of_nodes()}  \n Node colors represent amount of constructs within dLFC threshold.")
     st.altair_chart(network, use_container_width=True)
 
 def display_FAQ():

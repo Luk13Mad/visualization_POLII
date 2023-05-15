@@ -3,7 +3,7 @@ import streamlit as st
 
 def graphics_main():
     st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
-    st.markdown("Welcome to the homepage.  \n TODO CITATION")
+    st.markdown("Welcome to the homepage.")
 
     tab1,tab2 = st.tabs(["Introduction","FAQ"])
 
@@ -11,7 +11,7 @@ def graphics_main():
         display_introduction()
 
     with tab2:
-        st.text("placeholder")
+        display_small_FAQ()
 
 
     st.markdown("***")
@@ -36,4 +36,16 @@ def display_introduction():
 
     ## Dysregulated gene expression: Fueling oncogenesis, but eliciting actionable dependencies.  \n
     Cancers support oncogenic signaling by altering specific transcription stages – but as a side-effect elicit precise and actionable molecular dependencies. We here provide a detailed atlas of such vulnerabilities, each assigned to distinct stages of dysregulated transcription.
+    ''')
+
+def display_small_FAQ():
+    st.write('''
+    ## How can i cite this website? 
+    TODO
+
+    ## How can i contact you for suggestions or comments?
+    TODO
+
+    ## Can i view the source code for this website?
+    Sure, it is available on [GitHub](https://github.com/Luk13Mad/visualization_POLII)
     ''')
