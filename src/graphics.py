@@ -179,21 +179,24 @@ def display_networkgraph(data):
     LFC_A_cutoff_min,LFC_A_cutoff_max = st.slider("Cutoff LFC A",min_value = LFC_A_min - 0.01,
                              max_value = LFC_A_max + 0.01,
                              value = (LFC_A_min,LFC_A_max),
-                             step = 0.001,key = "network_slider_A")
+                             step = 0.001,key = "network_slider_A",
+                             help = "LFC range of crRNAs in Spot A. We recommend to exclude highly essential crRNAs from the analysis. ")
     
     LFC_B_min = float(data.loc[:,"LFC(B)"].min())
     LFC_B_max = float(data.loc[:,"LFC(B)"].max())
     LFC_B_cutoff_min,LFC_B_cutoff_max = st.slider("Cutoff LFC B",min_value = LFC_B_min - 0.01,
                              max_value = LFC_B_max + 0.01,
                              value = (LFC_B_min,LFC_B_max),
-                             step = 0.001,key = "network_slider_B")
+                             step = 0.001,key = "network_slider_B",
+                             help = "LFC range of crRNAs in Spot B. We recommend to exclude highly essential crRNAs from the analysis. ")
     dLFC_min = float(data.loc[:,"dLFC(A,B)"].min())
     dLFC_max = float(data.loc[:,"dLFC(A,B)"].max())
     dLFC_cutoff_min,dLFC_cutoff_max = st.slider("Cutoff dLFC",min_value = dLFC_min - 0.01,
                              max_value = dLFC_max + 0.01,
                              value = (dLFC_min,dLFC_max),
                              step = 0.001,
-                             key = "network_slider_dLFC") 
+                             key = "network_slider_dLFC",
+                             help = "negative dLFCs = synthetic sickness, positive dLFCs = buffering") 
     
     mask_geneA = data.loc[:,"Gene(A)"] == gene
     mask_geneB = data.loc[:,"Gene(B)"] == gene
