@@ -9,7 +9,7 @@ import util
 #main graphics function
 #handle layout here
 def graphics_main(data):
-    st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
+    st.markdown("# **Data exploration**")
     st.markdown("Visualization for the supplementary data and additional graphics.  \n Based on :  \n TODO CITATION")
 
     tab1,tab2,tab3,tab4,tab5 = st.tabs(["Introduction","Network graph","Raw data","FAQ","Additional graphics"])

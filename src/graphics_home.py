@@ -5,6 +5,8 @@ def graphics_main():
     st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
     st.markdown("Welcome to the homepage.  \n TODO CITATION")
 
+    url = "https://liability-atlas.streamlit.app/#actionable-dependency-atlas-of-dysregulated-transcription"
+    st.markdown("check out this [link](%s)" % url)
 
 
     st.markdown("***")
