@@ -12,18 +12,23 @@ def graphics_main(data):
     st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
     st.markdown("Visualization for the supplementary data and additional graphics.  \n Based on :  \n TODO CITATION")
 
-    tab1,tab2 = st.tabs(["Raw data","Network graph"])
+    tab1,tab2,tab3 = st.tabs(["Introduction","Raw data","Network graph"])
     with tab1:
+        st.markdown("# **Introduction** :")
+
+    with tab2:
         st.markdown("# **Raw data table** :")
         display_dataframe_bargraph(data)
 
-    with tab2:
+    with tab3:
         st.markdown("# **Network graph** :  \n Constructs containing TTTT control have been excluded for this plot.  \n Edges represent amount of constructs within dLFC threshold.")
         display_networkgraph(data)
 
     st.markdown("***")
     st.markdown("# **Additional graphics** :")
     st.image(Image.open("data/puppies.jpg"),caption = "The description will be here, until then enjoy these puppies.")
+
+    st.markdown("Impressum:")
 
 #display dataframe
 #make interaction selection
@@ -128,16 +133,21 @@ def display_big_bargraph(bardata):
 
 def display_dLFC_bargraph(bardata):
     #for color transform just add column to bardata
-    bar_dLFC = alt.Chart(bardata.melt(
+
+    agg_bardata = bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
                                 value_vars = ["dLFC(A,B)"]
                             ).groupby(
                                 "variable"
                             ).agg({"value" : np.mean}).reset_index()
+    agg_bardata["color"] = agg_bardata.loc[:,"value"].apply(lambda x: "red" if x <= -0.5 else ("blue" if x >= 0.5 else "grey"))
+    st.dataframe(agg_bardata)
+    bar_dLFC = alt.Chart(agg_bardata
                     ).mark_bar().encode(
                             x = alt.X("variable",sort = ["dLFC(A,B)"],title = None),
                             y = alt.Y("value",title = "LFC"),
-                            tooltip = alt.value(None)) #bin=alt.Bin(step=threshold), scale=alt.Scale(domain=[0, threshold], range=["#1f77b4", "#ff7f0e"]), legend=None
+                            tooltip = alt.value(None),
+                            color = alt.Color("color:N",scale = None))
     
     scatter_dLFC = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
