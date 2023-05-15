@@ -1,7 +1,8 @@
 import streamlit as st
 import util
 import sidebar
-import graphics
+import graphics_data
+import graphics_home
 from argparse import ArgumentParser
 
 
@@ -9,41 +10,44 @@ from argparse import ArgumentParser
 st.set_page_config(
      page_title='CRISPR screen',
      layout="wide",
-     initial_sidebar_state="expanded",
+     initial_sidebar_state = "collapsed",
 )
 
 
 #main function
 def main():
-    sidebar_options = sidebar.app_sidebar()
-    app_body(sidebar_options)
+    multipage = util.MultiPage()
+    multipage.add_page("Homepage",home_app_body)
+    multipage.add_page("Data exploration",data_app_body)
 
-    return None
+    multipage.run()
+
+def home_app_body():
+    graphics_home.graphics_main()
 
 #mainbody displaying data
 #takes care of routing sidebar selections
-def app_body(sidebar_options):
+def data_app_body():
+    sidebar_options = sidebar.app_sidebar()
     match sidebar_options["cell"]:
         case "T98-G":
             match sidebar_options["TP"]:
                 case "Early":
-                    graphics.graphics_main(T98G_early)
+                    graphics_data.graphics_main(T98G_early)
                 case "Late":
-                    graphics.graphics_main(T98G_late)
+                    graphics_data.graphics_main(T98G_late)
         case "HEK 293T":
             match sidebar_options["TP"]:
                 case "Early":
-                    graphics.graphics_main(HEK_early)
+                    graphics_data.graphics_main(HEK_early)
                 case "Late":
-                    graphics.graphics_main(HEK_late)
+                    graphics_data.graphics_main(HEK_late)
         case "hTert-RPE1":
             match sidebar_options["TP"]:
                 case "Early":
-                    graphics.graphics_main(RPE1_early)
+                    graphics_data.graphics_main(RPE1_early)
                 case "Late":
-                    graphics.graphics_main(RPE1_late)
-
-    return None
+                    graphics_data.graphics_main(RPE1_late)
 
 
 if __name__ == '__main__':
