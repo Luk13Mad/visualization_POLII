@@ -12,23 +12,27 @@ def graphics_main(data):
     st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
     st.markdown("Visualization for the supplementary data and additional graphics.  \n Based on :  \n TODO CITATION")
 
-    tab1,tab2,tab3 = st.tabs(["Introduction","Raw data","Network graph"])
+    tab1,tab2,tab3,tab4,tab5 = st.tabs(["Introduction","Raw data","Network graph","FAQ","Additional graphics"])
     with tab1:
-        st.markdown("# **Introduction** :")
+        display_introduction()
 
     with tab2:
-        st.markdown("# **Raw data table** :")
+        st.markdown("## Raw data table :")
         display_dataframe_bargraph(data)
 
     with tab3:
-        st.markdown("# **Network graph** :  \n Constructs containing TTTT control have been excluded for this plot.  \n Edges represent amount of constructs within dLFC threshold.")
+        st.markdown("## Network graph :  \n Constructs containing TTTT control have been excluded for this plot.  \n Node colors represent amount of constructs within dLFC threshold.")
         display_networkgraph(data)
 
-    st.markdown("***")
-    st.markdown("# **Additional graphics** :")
-    st.image(Image.open("data/puppies.jpg"),caption = "The description will be here, until then enjoy these puppies.")
+    with tab4:
+        st.markdown("## FAQ")
+        st.markdown("FAQ will be here.")
 
-    st.markdown("Impressum:")
+    with tab5:
+        st.image(Image.open("data/puppies.jpg"),caption = "The description will be here, until then enjoy these puppies.")
+
+    st.markdown("***")
+    st.markdown("**Impressum:**  \n Links to our host intitutions' data protection statements:  \n [DKFZ](https://www.dkfz.de/de/datenschutzerklaerung.html?m=1668607885&)")
 
 #display dataframe
 #make interaction selection
@@ -38,21 +42,24 @@ def display_dataframe_bargraph(data):
     LFC_A_cutoff_min,LFC_A_cutoff_max = st.slider("Cutoff LFC A",min_value = LFC_A_min - 0.01,
                              max_value = LFC_A_max + 0.01,
                              value = (LFC_A_min,LFC_A_max),
-                             step = 0.001)
+                             step = 0.001,
+                             help = "LFC range of crRNAs in Spot A. We recommend to exclude highly essential crRNAs from the analysis. ")
     
     LFC_B_min = float(data.loc[:,"LFC(B)"].min())
     LFC_B_max = float(data.loc[:,"LFC(B)"].max())
     LFC_B_cutoff_min,LFC_B_cutoff_max = st.slider("Cutoff LFC B",min_value = LFC_B_min - 0.01,
                              max_value = LFC_B_max + 0.01,
                              value = (LFC_B_min,LFC_B_max),
-                             step = 0.001) 
+                             step = 0.001,
+                             help = "LFC range of crRNAs in Spot B. We recommend to exclude highly essential crRNAs from the analysis.") 
 
     dLFC_min = float(data.loc[:,"dLFC(A,B)"].min())
     dLFC_max = float(data.loc[:,"dLFC(A,B)"].max())
     dLFC_cutoff_min,dLFC_cutoff_max = st.slider("Cutoff dLFC",min_value = dLFC_min - 0.01,
                              max_value = dLFC_max + 0.01,
                              value = (dLFC_min,dLFC_max),
-                             step = 0.001) 
+                             step = 0.001,
+                             help = "negative dLFCs = synthetic sickness, positive dLFCs = buffering") 
     
     TTTT = st.checkbox('TTTT control',help = "If selected removes constructs with TTTT control.")
 
@@ -141,7 +148,7 @@ def display_dLFC_bargraph(bardata):
                                 "variable"
                             ).agg({"value" : np.mean}).reset_index()
     agg_bardata["color"] = agg_bardata.loc[:,"value"].apply(lambda x: "red" if x <= -0.5 else ("blue" if x >= 0.5 else "grey"))
-    st.dataframe(agg_bardata)
+
     bar_dLFC = alt.Chart(agg_bardata
                     ).mark_bar().encode(
                             x = alt.X("variable",sort = ["dLFC(A,B)"],title = None),
@@ -230,3 +237,21 @@ def display_networkgraph(data):
     st.markdown(f"Number of nodes: n = {G.number_of_nodes()}")
     st.altair_chart(network, use_container_width=True)
 
+def display_introduction():
+    st.markdown('''
+    ## Actionable dependency atlas of dysregulated transcription  \n
+    ''')
+
+    with open("data/introduction_video.mp4","rb") as video:
+        st.video(video.read())
+
+    st.markdown('''
+    ## Dysregulated gene expression is druggable.  \n
+    Gene expression dysregulation is a hallmark of most human diseases – including cancer. Transcription is tightly regulated through a concerted action of regulatory factors such as transcriptional cyclin-depending kinases (tCDKs) – many of which are druggable. Many small-molecule inhibitor targeting transcription-associated processes are now evaluated (pre)clinically, but frequently lack biomarkers for patient stratitication. 
+
+    ## Unexpected relationships between transcription-related pathways.  \n
+    We developed a Cas13 platform for multidimensional gene perturbation by guided RNA cleavage, which enabled the discovery of gene-dosage dependencies and higher-order genetic interaction scenarios. We performed massively parallel GI screens across three cellular models, multiple time-points, and 47,727 pairwise perturbations. The resulting complex interactomes enabled the discovery of unexpected relationships between transcription-related pathway, many of which are druggable. 
+
+    ## Dysregulated gene expression: Fueling oncogenesis, but eliciting actionable dependencies.  \n
+    Cancers support oncogenic signaling by altering specific transcription stages – but as a side-effect elicit precise and actionable molecular dependencies. We here provide a detailed atlas of such vulnerabilities, each assigned to distinct stages of dysregulated transcription.
+    ''')
