@@ -5,7 +5,7 @@ import util
 def graphics_main():
     st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
 
-    tab1,tab2,tab3 = st.tabs(["Introduction","FAQ"])
+    tab1,tab2,tab3 = st.tabs(["Introduction","FAQ","Data"])
 
     with tab1:
         display_introduction()
