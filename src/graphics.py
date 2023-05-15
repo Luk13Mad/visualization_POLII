@@ -245,6 +245,7 @@ def display_introduction():
     with open("data/introduction_video.mp4","rb") as video:
         st.video(video.read())
 
+
     st.markdown('''
     ## Dysregulated gene expression is druggable.  \n
     Gene expression dysregulation is a hallmark of most human diseases – including cancer. Transcription is tightly regulated through a concerted action of regulatory factors such as transcriptional cyclin-depending kinases (tCDKs) – many of which are druggable. Many small-molecule inhibitor targeting transcription-associated processes are now evaluated (pre)clinically, but frequently lack biomarkers for patient stratitication. 
