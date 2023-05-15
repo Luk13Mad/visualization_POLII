@@ -239,10 +239,11 @@ def display_networkgraph(data):
     network = nxa.draw_networkx(G=G,pos=pos,node_tooltip = ['name'],
                                 node_label = "name",node_color="distance",
                                 font_color = "black",font_size = 18)
-    
+    network.layer[-1] = network.layer[-1].encode(tooltip = "name:N") #manually update encoding, only displays name as tooltip
 
     st.markdown(f"Number of nodes: n = {G.number_of_nodes()}  \n Node colors represent amount of constructs within dLFC threshold.")
     st.altair_chart(network, use_container_width=True)
+    
 
 def display_FAQ():
     st.write('''
