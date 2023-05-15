@@ -15,7 +15,7 @@ st.set_page_config(
 
 
 #main function
-def main():
+def main_data():
     data_app_body()
 
 #mainbody displaying data
@@ -49,4 +49,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     HEK_early,HEK_late,T98G_early,T98G_late,RPE1_early,RPE1_late = util.load_data(args.data)
-    main()
+    main_data()

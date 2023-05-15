@@ -15,7 +15,7 @@ st.set_page_config(
 
 
 #main function
-def main():
+def main_homepage():
     home_app_body()
 
 def home_app_body():
