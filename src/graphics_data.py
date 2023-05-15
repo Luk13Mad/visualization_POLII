@@ -23,10 +23,12 @@ def graphics_main(data):
         display_dataframe_bargraph(data)
 
     with tab3:
+        st.markdown("## FAQ :")
         display_FAQ()
 
     with tab4:
-        st.image(Image.open("data/puppies.jpg"),caption = "The description will be here, until then enjoy these puppies.")
+        st.markdown("## Additional graphics :")
+        display_additional_graphics()
 
     st.markdown("***")
     st.markdown("**Impressum:**  \n Links to our host intitutions' data protection statements:  \n [DKFZ](https://www.dkfz.de/de/datenschutzerklaerung.html?m=1668607885&)")
@@ -104,7 +106,8 @@ def display_dataframe_bargraph(data):
         st.markdown("**For performance reasons no bargraph will be plotted if for either spot all genes are selected.**")
 
 
-
+def display_additional_graphics():
+    st.image(Image.open("data/puppies.jpg"),caption = "The description will be here, until then enjoy these puppies.")
         
 
 def display_big_bargraph(bardata):

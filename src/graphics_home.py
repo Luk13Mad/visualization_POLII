@@ -1,9 +1,13 @@
 import streamlit as st
+import util
 
 
 def graphics_main():
     st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
-    st.markdown("Welcome to the homepage.")
+
+    st.markdown('''
+    Take me to the [data](/Data_Exploration)
+    ''')
 
     tab1,tab2 = st.tabs(["Introduction","FAQ"])
 

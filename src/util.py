@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import os
+import base64
 
 #function loading data
 @st.cache_data
@@ -65,3 +66,22 @@ def aggregate_df_to_edgelist(df : pd.DataFrame,maingene = str,source = "Gene(A)"
         edgelist.append((maingene,k,aggfun(edgedict[k])))
 
     return edgelist
+
+
+
+#code to allow image with link from https://discuss.streamlit.io/t/href-on-image/9693/4
+@st.cache_data
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+@st.cache_data
+def get_img_with_href(local_img_path, target_url):
+    img_format = os.path.splitext(local_img_path)[-1].replace('.', '')
+    bin_str = get_base64_of_bin_file(local_img_path)
+    html_code = f'''
+        <a href="{target_url}">
+                <img width="200" height="200" src="data:image/{img_format};base64,{bin_str}" />
+        </a>'''
+    return html_code
