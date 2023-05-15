@@ -36,6 +36,17 @@ def graphics_main(data):
 #display dataframe
 #make interaction selection
 def display_dataframe_bargraph(data):
+    unique_genes_A = ["all genes"] + list(data.loc[:,"Gene(A)"].sort_values().unique())
+    gene1 = st.selectbox(
+        'Gene in spot A',
+        unique_genes_A)
+
+    unique_genes_B = ["all genes"] + list(data.loc[:,"Gene(B)"].sort_values().unique())
+    gene2 = st.selectbox(
+        'Gene in spot B',
+        unique_genes_B)
+    
+
     LFC_A_min = float(data.loc[:,"LFC(A)"].min())
     LFC_A_max = float(data.loc[:,"LFC(A)"].max())
     LFC_A_cutoff_min,LFC_A_cutoff_max = st.slider("Cutoff LFC A",min_value = LFC_A_min - 0.01,
@@ -61,17 +72,6 @@ def display_dataframe_bargraph(data):
                              help = "negative dLFCs = synthetic sickness, positive dLFCs = buffering") 
     
     TTTT = st.checkbox('TTTT control',help = "If selected removes constructs with TTTT control.")
-
-
-    unique_genes_A = ["all genes"] + list(data.loc[:,"Gene(A)"].sort_values().unique())
-    gene1 = st.selectbox(
-        'Gene in spot A',
-        unique_genes_A)
-
-    unique_genes_B = ["all genes"] + list(data.loc[data.loc[:,"Gene(A)"] == gene1,"Gene(B)"].sort_values().unique())
-    gene2 = st.selectbox(
-        'Gene in spot B',
-        unique_genes_B)
 
     
     mask_cutoff_A = (data.loc[:,"LFC(A)"] >= LFC_A_cutoff_min) & (data.loc[:,"LFC(A)"] <= LFC_A_cutoff_max)
