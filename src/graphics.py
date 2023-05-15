@@ -12,15 +12,15 @@ def graphics_main(data):
     st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
     st.markdown("Visualization for the supplementary data and additional graphics.  \n Based on :  \n TODO CITATION")
 
-    tab1,tab2,tab3,tab4,tab5 = st.tabs(["Introduction","Raw data","Network graph","FAQ","Additional graphics"])
+    tab1,tab2,tab3,tab4,tab5 = st.tabs(["Introduction","Network graph","Raw data","FAQ","Additional graphics"])
     with tab1:
         display_introduction()
 
-    with tab3:
+    with tab2:
         st.markdown("## Network graph :  \n Constructs containing TTTT control have been excluded for this plot.  \n Node colors represent amount of constructs within dLFC threshold.")
         display_networkgraph(data)
 
-    with tab2:
+    with tab3:
         st.markdown("## Raw data table :")
         display_dataframe_bargraph(data)
 
@@ -174,23 +174,30 @@ def display_networkgraph(data):
         'Gene to display interactions for',
         unique_genes)
     
-    LFC_A_min = float(data.loc[:,"LFC(A)"].min())
-    LFC_A_max = float(data.loc[:,"LFC(A)"].max())
-    LFC_A_cutoff_min,LFC_A_cutoff_max = st.slider("Cutoff LFC A",min_value = LFC_A_min - 0.01,
-                             max_value = LFC_A_max + 0.01,
-                             value = (LFC_A_min,LFC_A_max),
-                             step = 0.001,key = "network_slider_A",
-                             help = "LFC range of crRNAs in Spot A. We recommend to exclude highly essential crRNAs from the analysis. ")
+    mask_geneA = data.loc[:,"Gene(A)"] == gene
+    mask_geneB = data.loc[:,"Gene(B)"] == gene
+    mask_gene = (mask_geneA | mask_geneB)
+
+    LFC_selected_min = float(np.nanmin((data.loc[mask_geneA,"LFC(A)"].min(),data.loc[mask_geneB,"LFC(B)"].min())))
+    LFC_selected_max = float(np.nanmax((data.loc[mask_geneA,"LFC(A)"].max(),data.loc[mask_geneB,"LFC(B)"].max())))
     
-    LFC_B_min = float(data.loc[:,"LFC(B)"].min())
-    LFC_B_max = float(data.loc[:,"LFC(B)"].max())
-    LFC_B_cutoff_min,LFC_B_cutoff_max = st.slider("Cutoff LFC B",min_value = LFC_B_min - 0.01,
-                             max_value = LFC_B_max + 0.01,
-                             value = (LFC_B_min,LFC_B_max),
-                             step = 0.001,key = "network_slider_B",
-                             help = "LFC range of crRNAs in Spot B. We recommend to exclude highly essential crRNAs from the analysis. ")
-    dLFC_min = float(data.loc[:,"dLFC(A,B)"].min())
-    dLFC_max = float(data.loc[:,"dLFC(A,B)"].max())
+    LFC_selected_cutoff_min,LFC_selected_cutoff_max = st.slider("Cutoff LFC selected gene",min_value = LFC_selected_min - 0.01,
+                             max_value = LFC_selected_max + 0.01,
+                             value = (LFC_selected_min,LFC_selected_max),
+                             step = 0.001,key = "network_slider_selected",
+                             help = "LFC range of crRNAs for selected gene. We recommend to exclude highly essential crRNAs from the analysis. ")
+    
+
+    LFC_other_min = float(np.nanmin((data.loc[mask_geneA,"LFC(B)"].min(),data.loc[mask_geneB,"LFC(A)"].min())))
+    LFC_other_max = float(np.nanmax((data.loc[mask_geneA,"LFC(B)"].max(),data.loc[mask_geneB,"LFC(A)"].max())))
+    LFC_other_cutoff_min,LFC_other_cutoff_max = st.slider("Cutoff LFC paired gene",min_value = LFC_other_min - 0.01,
+                             max_value = LFC_other_max + 0.01,
+                             value = (LFC_other_min,LFC_other_max),
+                             step = 0.001,key = "network_slider_other",
+                             help = "LFC range of crRNAs for paired gene. We recommend to exclude highly essential crRNAs from the analysis. ")
+    
+    dLFC_min = float(data.loc[mask_gene,"dLFC(A,B)"].min())
+    dLFC_max = float(data.loc[mask_gene,"dLFC(A,B)"].max())
     dLFC_cutoff_min,dLFC_cutoff_max = st.slider("Cutoff dLFC",min_value = dLFC_min - 0.01,
                              max_value = dLFC_max + 0.01,
                              value = (dLFC_min,dLFC_max),
@@ -198,18 +205,17 @@ def display_networkgraph(data):
                              key = "network_slider_dLFC",
                              help = "negative dLFCs = synthetic sickness, positive dLFCs = buffering") 
     
-    mask_geneA = data.loc[:,"Gene(A)"] == gene
-    mask_geneB = data.loc[:,"Gene(B)"] == gene
+    
     mask_TTTT = data.loc[:,"TTTT control"] == "no"
-    mask_cutoff_A = (data.loc[:,"LFC(A)"] >= LFC_A_cutoff_min) & (data.loc[:,"LFC(A)"] <= LFC_A_cutoff_max)
-    mask_cutoff_B = (data.loc[:,"LFC(B)"] >= LFC_B_cutoff_min) & (data.loc[:,"LFC(B)"] <= LFC_B_cutoff_max)
+    mask_cutoff_selected = (data.loc[mask_geneA,"LFC(A)"] >= LFC_selected_cutoff_min) & (data.loc[mask_geneA,"LFC(A)"] <= LFC_selected_cutoff_max) | (data.loc[mask_geneB,"LFC(B)"] >= LFC_selected_cutoff_min) & (data.loc[mask_geneB,"LFC(B)"] <= LFC_selected_cutoff_max)
+    mask_cutoff_other = (data.loc[mask_geneA,"LFC(B)"] >= LFC_other_cutoff_min) & (data.loc[mask_geneA,"LFC(B)"] <= LFC_other_cutoff_max) | (data.loc[mask_geneB,"LFC(A)"] >= LFC_other_cutoff_min) & (data.loc[mask_geneB,"LFC(A)"] <= LFC_other_cutoff_max)
     mask_cutoff_dLFC = (data.loc[:,"dLFC(A,B)"] >= dLFC_cutoff_min) & (data.loc[:,"dLFC(A,B)"] <= dLFC_cutoff_max)
-    combined_mask = mask_TTTT & mask_cutoff_A & mask_cutoff_B & mask_cutoff_dLFC & (mask_geneA | mask_geneB)
+    combined_mask = mask_TTTT & mask_cutoff_selected & mask_cutoff_other & mask_cutoff_dLFC & mask_gene
 
     data = data.loc[combined_mask,["Gene(A)","Gene(B)","dLFC(A,B)"]]
     edgelist = util.aggregate_df_to_edgelist(df = data, maingene = gene)
 
-    # Generate a random graph
+    # Generate graph
     G = nx.Graph()
     if len(edgelist) == 0:
         G.add_weighted_edges_from([(gene,gene,0)])
@@ -237,7 +243,9 @@ def display_networkgraph(data):
             node_distance.update({s:v["weight"]})
     nx.set_node_attributes(G,node_distance,"distance")
 
-    network = nxa.draw_networkx(G=G,pos=pos,node_tooltip = ['name'],node_label = "name",node_color="distance",font_color = "black",font_size = 18)
+    network = nxa.draw_networkx(G=G,pos=pos,node_tooltip = ['name'],
+                                node_label = "name",node_color="distance",
+                                font_color = "black",font_size = 18)
     
 
     st.markdown(f"Number of nodes: n = {G.number_of_nodes()}")
