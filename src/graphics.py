@@ -138,22 +138,23 @@ def display_big_bargraph(bardata):
 
 
 def display_dLFC_bargraph(bardata):
-    #for color transform just add column to bardata
-
     agg_bardata = bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
                                 value_vars = ["dLFC(A,B)"]
                             ).groupby(
                                 "variable"
                             ).agg({"value" : np.mean}).reset_index()
-    agg_bardata["color"] = agg_bardata.loc[:,"value"].apply(lambda x: "red" if x <= -0.5 else ("blue" if x >= 0.5 else "grey"))
+    agg_bardata["color"] = agg_bardata.loc[:,"value"].apply(lambda x: "sickness" if x <= -0.5 else ("buffering" if x >= 0.5 else "neutral"))
 
     bar_dLFC = alt.Chart(agg_bardata
                     ).mark_bar().encode(
                             x = alt.X("variable",sort = ["dLFC(A,B)"],title = None),
-                            y = alt.Y("value",title = "LFC"),
+                            y = alt.Y("value",title = "dLFC"),
                             tooltip = alt.value(None),
-                            color = alt.Color("color:N",scale = None))
+                            color = alt.Color("color:N",scale = alt.Scale(
+                                                                domain = ["sickness","buffering","neutral"],
+                                                                range = ["#ff581a", "#00adff","sand"]),
+                                                title = "Effect"))
     
     scatter_dLFC = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
@@ -161,7 +162,7 @@ def display_dLFC_bargraph(bardata):
                             )
                     ).mark_circle(size = 30,color = "black").encode(
                         x = alt.X("variable",sort = ["dLFC(A,B)"],title = None),
-                        y = alt.Y("value",title = "LFC"),
+                        y = alt.Y("value",title = "dLFC"),
                         tooltip = ["value","CrRna(A)","CrRNA(B)"],
                     )
 
