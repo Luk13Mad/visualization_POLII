@@ -16,13 +16,13 @@ def graphics_main(data):
     with tab1:
         display_introduction()
 
-    with tab2:
-        st.markdown("## Raw data table :")
-        display_dataframe_bargraph(data)
-
     with tab3:
         st.markdown("## Network graph :  \n Constructs containing TTTT control have been excluded for this plot.  \n Node colors represent amount of constructs within dLFC threshold.")
         display_networkgraph(data)
+
+    with tab2:
+        st.markdown("## Raw data table :")
+        display_dataframe_bargraph(data)
 
     with tab4:
         display_FAQ()
@@ -218,7 +218,10 @@ def display_networkgraph(data):
         
     springload_dict = dict()
     for (s,t,v) in G.edges(data = True):
-        springload_dict.update({(s,t):{"springload":(1/v["weight"])}})
+        try:
+            springload_dict.update({(s,t):{"springload":(1/v["weight"])}})
+        except:
+            springload_dict.update({(s,t):{"springload":0}})
     nx.set_edge_attributes(G,springload_dict)
 
 
