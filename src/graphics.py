@@ -287,7 +287,7 @@ def display_FAQ():
     Let’s assume a synthetic lethality, in which $LFCA = -0.5$ and $LFCB = -0.7$. The observed $LFC(A,B) = -3$. The $LFC(A,B)_{expected}$  is  $LFC(A) + LFC(B) = -1.2$. The $\Delta LFC = -3 – (-1.2) = -1.8$. The negativity of the $\Delta$LFC indicates a negative GI – or a synthetic sickness. We define a buffering relationship to exhibit a $\Delta LFC > 0$, whereas a $\Delta LFC = 0$ reflects additivity (= no interaction). 
 
 
-    ## How do you know LFCobserved? 
+    ## How do you know $LFC_{observed}$? 
     They are based on our combinatorial CRISPR screens and reflect the LFC of targeting two genes in parallel. 
 
     ## Why do you use Cas13d and not Cas9 or Cas12?
