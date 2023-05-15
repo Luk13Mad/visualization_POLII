@@ -27,4 +27,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if util.check_password():
         HEK_early,HEK_late,T98G_early,T98G_late,RPE1_early,RPE1_late = util.load_data(args.data)
-        main()
+        main_homepage()
