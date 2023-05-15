@@ -25,8 +25,7 @@ def graphics_main(data):
         display_networkgraph(data)
 
     with tab4:
-        st.markdown("## FAQ")
-        st.markdown("FAQ will be here.")
+        display_FAQ()
 
     with tab5:
         st.image(Image.open("data/puppies.jpg"),caption = "The description will be here, until then enjoy these puppies.")
@@ -255,4 +254,59 @@ def display_introduction():
 
     ## Dysregulated gene expression: Fueling oncogenesis, but eliciting actionable dependencies.  \n
     Cancers support oncogenic signaling by altering specific transcription stages – but as a side-effect elicit precise and actionable molecular dependencies. We here provide a detailed atlas of such vulnerabilities, each assigned to distinct stages of dysregulated transcription.
+    ''')
+
+def display_FAQ():
+    st.write('''
+    ## What is a transcription cycle?
+    Transcription cycles and cell cycles share many characteristics: They are both organized in uni-directional stages and are both tightly controlled by cyclin dependent kinases (CDKs), just to name a few. Transcription stages are: recruitment &rarr; initiation &rarr; pausing and release &rarr; elongation &rarr; termination &rarr; recycling of components.  \n
+    Transcription cycles are frequently dysregulated across human diseases. In cancer, this includes mutations of transcriptional CDKs (e.g., CDK12 or CDK7), an increase of transcription outputs (e.g., upon MYC amplification) or an overall increased dependence of tumors on transcription regulators. More are more inhibitors of transcription enter (pre)clinical trials, creating a strong impetus to understand the underlying determinants and molecular bases of therapeutic activity.
+
+    ## What is a genetic interaction (GI)?
+    Phenotypes are frequently not dictated by the status of a single gene alone, but are rather the result of multiple genes interacting with each other. In the context of fitness, genetic interactions come at two different flavors:  \n
+    1.	A negative GI or “1 + 1 is > 2”  \n A negative GI refers to situations in which a combination of two genetic events results in a more severe fitness effect than what would be expected given the individual phenotype of each genetic event. A synthetic lethality is the most extreme form of a negative GI. We like the expression “synthetic sickness” better – since this term also includes fitness defects that do not result in the death of a cell.  \n
+    2.	A positive GI or “1 + 1 is < 2”  \n A positive GI in refers to situation in which the combined effect of two genetic events results in a fitness higher than what would be expected given each individual phenotype. We like to refer to these situation as “buffering interactions”. 
+
+    ## What are LFCs?
+    LFCs are an abbreviation for “log fold changes”. We like to calculate LFCs in order to mathematically quantify fitness trends over time. If between two time-points the abundance of a crRNA is reduced by 50%, we would express this as $log2(0.5) = -1 = LFC$. Therefore: negative LFCs indicate fitness defects, whereas positive LFCs indicate a fitness increase above the baseline.  \n
+    The LFC of a specific crRNA "A" (LFC A) or "B" (LFC B) is the mean LFC of all pairs of this crRNA with a non-targeting control. For each gene targeted, there are three different spacers associated with.
+
+    ## How do we calculate expected polygenetic phenotypes? 
+    We use an additive model. For digenic phenotypes this is straight-forward:  \n
+    $LFC(A,B)_{expected} = LFC(A) + LFC(B)$  \n
+    (LFC (A) = LFC of perturbation A, LFC (B) = LFC of perturbation B)  \n
+    It’s trickier for interactions between three genes. Here we sum up both the individual LFCs and digenetic interactions to calculate expected LFCs. 
+
+    ## What is a $\Delta$LFC?
+    $\Delta$LFCs express both the direction of a GI (positive or negative) and its extent. It is calculated according to the following formula:  \n
+    $\Delta LFC =   LFC_{observed}   -   LFC_{expected}$  \n
+    Let’s assume a synthetic lethality, in which $LFCA = -0.5$ and $LFCB = -0.7$. The observed $LFC(A,B) = -3$. The $LFC(A,B)_{expected}$  is  $LFC(A) + LFC(B) = -1.2$. The $\Delta LFC = -3 – (-1.2) = -1.8$. The negativity of the $\Delta$LFC indicates a negative GI – or a synthetic sickness. We define a buffering relationship to exhibit a $\Delta LFC > 0$, whereas a $\Delta LFC = 0$ reflects additivity (= no interaction). 
+
+
+    ## How do you know LFCobserved? 
+    They are based on our combinatorial CRISPR screens and reflect the LFC of targeting two genes in parallel. 
+
+    ## Why do you use Cas13d and not Cas9 or Cas12?
+    We believe that Cas13d exhibits several characteristics, which in their combination are unique.  \n
+    First, Cas13d targets RNA, not DNA. Therefore, it elicits knockdowns, not knockouts. Knockdowns have been shown by others to be beneficial for genetic interaction screens. We also think that they are resemble what can be expected from treating a patient with molecular drug: Partial target inhibition rather than knockout.  \n
+    Second, Cas13d can mobilize crRNA from CRISPR arrays, therefore enables the super-compact encoding of multiple crRNAs – which is ideal for library production and integrity.
+
+    ## Why do you recommend excluding highly essential crRNAs from my analysis?
+    If you deliver a death-punch to a cell by efficiently perturbing an essential gene, our $\Delta$LFC formula reaches its limitations. Let’s imagine a situation in which a researcher perturbs two essential genes. To reach the default (or neutral) outcome of additivity ($\Delta$ LFC = 0), the combined effect of perturbing two genes needs to match the sum of both single effects. However, perturbing two essential genes frequently fails to be additive. We like to exaggerate this by saying: “It’s hard for a cell to die twice as fast.” As a consequence, the $\Delta$LFC indicates a positive GI (=a buffering event), which we believe is misleading. We therefore recommend to exclude highly essential crRNAs.
+
+    ## What are TTTT controls?
+    We engineered some crRNAs in spot 1 to contain a Polymerase III transcriptional inactivator. Our idea here was to create some super-strong buffering events, which were meant to act as positive controls in our screen. They are biologically meaningless and should therefore be excluded from most analyses. 
+
+    ## Are you planning to extent this atlas? 
+    Absolutely! More cell lines, more transcription regulators, more druggable targets – stay tuned!
+
+    ## Are different isoforms listed?
+    No, while each guide could in theory target a specific isoform, this was not accounted for. 
+
+    ## Why don’t you calculate gene level interactions instead of crRNA level?
+    Cas13d elicits knockdowns, rather than knockouts. We find that many synthetic GIs are only become visible upon a modest gene dosage reduction. Averaging the effect of both strong and modest crRNAs targeting the same gene would mask such scenarios, we therefore decided to not calculate gene-level interactions. 
+
+    ## Why some cell lines have high positive LFC values and others not?
+    A positive LFC represents a fitness increase or enrichment of the given crRNA in the population.  For example, loss of a tumor suppressor can enable cells to divide faster. Such crRNAs thus enrich in a screen. We find fitness increases to exhibit a particularly strong context dependence. They occur more frequently seen in immortalized, un-transformed cellular models (such as hTert-RPE1). It’s challenging to make a cancer cell divide even faster! 
+
     ''')
