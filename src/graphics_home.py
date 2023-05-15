@@ -5,11 +5,7 @@ import util
 def graphics_main():
     st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
 
-    st.markdown('''
-    Take me to the [data](/Data_Exploration)
-    ''')
-
-    tab1,tab2 = st.tabs(["Introduction","FAQ"])
+    tab1,tab2,tab3 = st.tabs(["Introduction","FAQ"])
 
     with tab1:
         display_introduction()
@@ -17,6 +13,10 @@ def graphics_main():
     with tab2:
         display_small_FAQ()
 
+    with tab3:
+        st.markdown('''
+                    Take me to the [data](/Data_Exploration)
+                    ''')
 
     st.markdown("***")
     st.markdown("**Impressum:**  \n Links to our host intitutions' data protection statements:  \n [DKFZ](https://www.dkfz.de/de/datenschutzerklaerung.html?m=1668607885&)")
