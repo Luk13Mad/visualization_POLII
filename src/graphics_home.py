@@ -43,8 +43,11 @@ def display_FAQ():
     ## How can i cite this website? 
     TODO
 
+    ## On which data is this website based?
+    The interactive graphics are based on supplementary table available [here](TODO)
+
     ## How can i contact you for suggestions or comments?
-    TODO
+    Please refer to the contact information [here](/Contact_Info)
 
     ## Can i view the source code for this website?
     Sure, it is available on [GitHub](https://github.com/Luk13Mad/visualization_POLII)  \n

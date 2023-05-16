@@ -10,7 +10,6 @@ import util
 #handle layout here
 def graphics_main(data):
     st.markdown("# **Data exploration**")
-    st.markdown("Visualization for the supplementary data and additional graphics.  \n Based on :  \n TODO CITATION")
 
     tab1,tab2,tab3 = st.tabs(["Network graph","Raw data","Additional graphics"])
     
