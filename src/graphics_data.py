@@ -93,7 +93,10 @@ def display_dataframe_bargraph(data):
         mask_geneB = data.loc[:,"Gene(B)"] == gene2
 
     combined_mask = mask_cutoff_A & mask_cutoff_B & mask_TTTT & mask_geneA & mask_geneB & mask_cutoff_dLFC
-    st.dataframe(data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)",
+    if data.loc[combined_mask,:].empty:
+        st.markdown("**Not all genes appear in all combinations, pick a different combination.**")
+    else:
+        st.dataframe(data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)",
                                          "LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]].sort_values(["Gene(A)","Gene(B)"]).reset_index(drop=True))
     
     st.markdown("# **Bar graph** :  \n Constructs containing TTTT control have been excluded for this plot.")

@@ -3,7 +3,7 @@ import util
 
 
 def graphics_main():
-    st.markdown("# **Imbalanced Pol II transcription cycles elicit global and stage-specific collateral liabilities**")
+    st.markdown("# **Actionable dependency atlas of dysregulated transcription**")
 
     tab1,tab2,tab3 = st.tabs(["Introduction","FAQ","Data"])
 
@@ -24,7 +24,7 @@ def graphics_main():
 
 def display_introduction():
     st.markdown('''
-    ## Actionable dependency atlas of dysregulated transcription  \n
+    ## Introduction  \n
     ''')
 
     with open("data/introduction_video.mp4","rb") as video:

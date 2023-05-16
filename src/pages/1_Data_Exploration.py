@@ -48,5 +48,6 @@ if __name__ == '__main__':
     parser.add_argument("--data", type=str, default="data/Table_data.xlsx")
     args = parser.parse_args()
 
-    HEK_early,HEK_late,T98G_early,T98G_late,RPE1_early,RPE1_late = util.load_data(args.data)
-    main_data()
+    if util.check_password():
+        HEK_early,HEK_late,T98G_early,T98G_late,RPE1_early,RPE1_late = util.load_data(args.data)
+        main_data()
