@@ -1,7 +1,8 @@
 import pandas as pd
 import streamlit as st
 import os
-import base64
+from PIL import Image
+import io
 
 #function loading data
 @st.cache_data
@@ -66,3 +67,9 @@ def aggregate_df_to_edgelist(df : pd.DataFrame,maingene = str,source = "Gene(A)"
         edgelist.append((maingene,k,aggfun(edgedict[k])))
 
     return edgelist
+
+def read_png(path):
+    '''read PNG as bytes'''
+    with open(path,"rb") as f:
+        image = f.read()
+    return image

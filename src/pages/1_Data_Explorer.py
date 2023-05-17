@@ -20,7 +20,7 @@ def main_data():
 #mainbody displaying data
 #takes care of routing sidebar selections
 def data_app_body():
-    sidebar_options = sidebar.app_sidebar()
+    sidebar_options = sidebar.data_sidebar()
     match sidebar_options["cell"]:
         case "T98-G":
             match sidebar_options["TP"]:

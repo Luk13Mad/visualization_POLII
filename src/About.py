@@ -17,6 +17,8 @@ def main_homepage():
     home_app_body()
 
 def home_app_body():
+    with st.sidebar:
+        st.image(util.read_png("data/main_logo.png"))
     graphics_home.graphics_main()
 
 if __name__ == '__main__':

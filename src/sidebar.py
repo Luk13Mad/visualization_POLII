@@ -1,7 +1,8 @@
 import streamlit as st
+import util
 
 #config sidebar
-def app_sidebar():
+def data_sidebar():
     with st.sidebar:
         select_cellline = st.selectbox(
         'Which cell line would you like to look at?',
@@ -13,5 +14,7 @@ def app_sidebar():
             ("Early","Late"),
             help = "Early = D0vsD6 , Late = D0vsD16"
         )
+    with st.sidebar:
+        st.image(util.read_png("data/main_logo.png"))
 
     return {"cell" : select_cellline,"TP" : select_timepoint}

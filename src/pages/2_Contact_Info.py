@@ -4,6 +4,8 @@ from argparse import ArgumentParser
 import graphics_info
 
 def main_info():
+    with st.sidebar:
+        st.image(util.read_png("data/main_logo.png"))
     graphics_info.graphics_main()
 
 if __name__ == '__main__':

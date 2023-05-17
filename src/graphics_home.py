@@ -1,10 +1,17 @@
 import streamlit as st
+import util
 
 
 def graphics_main():
-    st.markdown("# **Actionable dependency atlas of dysregulated transcription**")
 
-    tab1,tab2,tab3,tab4 = st.tabs(["Welcome","Transcription Addiction","User Manual","FAQ"])
+    with st.container():
+        col1,col2 = st.columns([1,6])
+        with col1:
+            st.image(util.read_png("data/main_logo.png"),output_format = "PNG")
+        with col2:
+            st.markdown("# **Actionable dependency atlas of dysregulated transcription**")
+
+    tab1,tab2,tab3,tab4 = st.tabs(["Introduction","Transcription Addiction","User Manual","FAQ"])
 
     with tab1:
         st.markdown('''
