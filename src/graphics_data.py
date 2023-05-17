@@ -45,7 +45,7 @@ def display_dataframe_bargraph(data):
                              max_value = LFC_A_max + 0.01,
                              value = (LFC_A_min,LFC_A_max),
                              step = 0.001,
-                             help = "LFC range of crRNAs in Spot A. We recommend to exclude highly essential crRNAs from the analysis. ")
+                             help = "LFC range of crRNAs in Spot A. We recommend to exclude highly essential crRNAs (large negative values) from the analysis. ")
     
     LFC_B_min = float(data.loc[:,"LFC(B)"].min())
     LFC_B_max = float(data.loc[:,"LFC(B)"].max())
@@ -53,7 +53,7 @@ def display_dataframe_bargraph(data):
                              max_value = LFC_B_max + 0.01,
                              value = (LFC_B_min,LFC_B_max),
                              step = 0.001,
-                             help = "LFC range of crRNAs in Spot B. We recommend to exclude highly essential crRNAs from the analysis.") 
+                             help = "LFC range of crRNAs in Spot B. We recommend to exclude highly essential crRNAs (large negative values) from the analysis.") 
 
     dLFC_min = float(data.loc[:,"dLFC(A,B)"].min())
     dLFC_max = float(data.loc[:,"dLFC(A,B)"].max())
@@ -118,7 +118,8 @@ def display_big_bargraph(bardata):
                             tooltip = alt.value(None),
                             color = alt.Color("variable",
                                               scale = alt.Scale(domain=["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"],
-                                                                range=['blue', 'grey','green','red'])))
+                                                                range=['blue', 'grey','green','red']),
+                                             title = "LFC(.)"))
     
     scatter = alt.Chart(bardata.melt(
                                 id_vars = ["CrRna(A)","CrRNA(B)"],
@@ -176,7 +177,7 @@ def display_networkgraph(data):
                              max_value = LFC_selected_max + 0.01,
                              value = (LFC_selected_min,LFC_selected_max),
                              step = 0.001,key = "network_slider_selected",
-                             help = "LFC range of crRNAs for selected gene. We recommend to exclude highly essential crRNAs from the analysis. ")
+                             help = "LFC range of crRNAs for selected gene. We recommend to exclude highly essential crRNAs (large negative values) from the analysis. ")
     
 
     LFC_other_min = float(np.nanmin((data.loc[mask_geneA,"LFC(B)"].min(),data.loc[mask_geneB,"LFC(A)"].min())))
@@ -185,7 +186,7 @@ def display_networkgraph(data):
                              max_value = LFC_other_max + 0.01,
                              value = (LFC_other_min,LFC_other_max),
                              step = 0.001,key = "network_slider_other",
-                             help = "LFC range of crRNAs for paired gene. We recommend to exclude highly essential crRNAs from the analysis. ")
+                             help = "LFC range of crRNAs for paired gene. We recommend to exclude highly essential crRNAs (large negative values) from the analysis. ")
     
     dLFC_min = float(data.loc[mask_gene,"dLFC(A,B)"].min())
     dLFC_max = float(data.loc[mask_gene,"dLFC(A,B)"].max())
@@ -239,9 +240,5 @@ def display_networkgraph(data):
                                 font_color = "black",font_size = 18)
     network.layer[-1] = network.layer[-1].encode(tooltip = "name:N") #manually update encoding, only displays name as tooltip
 
-    st.markdown(f"Number of nodes: n = {G.number_of_nodes()}  \n Node colors represent amount of constructs within dLFC threshold.")
+    st.markdown(f"Number of nodes: n = {G.number_of_nodes()}  \n Node colors represent amount of constructs within thresholds.")
     st.altair_chart(network, use_container_width=True)
-    
-
-def display_FAQ():
-    pass

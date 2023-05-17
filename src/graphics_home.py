@@ -4,17 +4,21 @@ import streamlit as st
 def graphics_main():
     st.markdown("# **Actionable dependency atlas of dysregulated transcription**")
 
-    tab1,tab2,tab3 = st.tabs(["Transcription Addiction","User Manual","FAQ"])
+    tab1,tab2,tab3,tab4 = st.tabs(["Welcome","Transcription Addiction","User Manual","FAQ"])
 
     with tab1:
-        display_introduction()
-
-    with tab2:
         st.markdown('''
                     TODO
                     ''')
 
+    with tab2:
+        display_introduction()
+
     with tab3:
+        st.markdown('''
+                    TODO
+                    ''')
+    with tab4:
         display_FAQ()
 
 

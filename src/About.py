@@ -1,7 +1,5 @@
 import streamlit as st
 import util
-import sidebar
-import graphics_data
 import graphics_home
 from argparse import ArgumentParser
 
@@ -10,7 +8,7 @@ from argparse import ArgumentParser
 st.set_page_config(
      page_title='CRISPR screen',
      layout="wide",
-     initial_sidebar_state = "collapsed",
+     initial_sidebar_state = "expanded",
 )
 
 
