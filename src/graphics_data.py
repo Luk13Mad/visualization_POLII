@@ -14,7 +14,7 @@ def graphics_main(data):
     tab1,tab2,tab3 = st.tabs(["Network graph","Raw data","Additional graphics"])
     
     with tab1:
-        st.markdown("## Network graph :  \n Constructs containing TTTT control have been excluded for this plot.")
+        st.markdown("## Network graph :")
         display_networkgraph(data)
 
     with tab2:
@@ -91,7 +91,7 @@ def display_dataframe_bargraph(data):
         st.dataframe(data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)",
                                          "LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]].sort_values(["Gene(A)","Gene(B)"]).reset_index(drop=True))
     
-    st.markdown("# **Bar graph** :  \n Constructs containing TTTT control have been excluded for this plot.")
+    st.markdown("# **Bar graph** :")
 
     if gene1 != "all genes" and gene2 != "all genes":
         bardata = data.loc[combined_mask,["CrRna(A)","CrRNA(B)","Gene(A)","Gene(B)","LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed","dLFC(A,B)"]]

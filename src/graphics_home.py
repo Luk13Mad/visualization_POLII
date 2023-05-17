@@ -44,10 +44,14 @@ def display_FAQ():
     TODO
 
     ## On which data is this website based?
-    The interactive graphics are based on supplementary table available [here](TODO)
+    The interactive graphics are based on supplementary table available [here](TODO).  \n
+    You can browse the raw data in our data explorer.
 
     ## How can i contact you for suggestions or comments?
     Please refer to the contact information [here](/Contact_Info)
+
+    ## Is all raw data used for the network graph and bargraph?
+    No, the constructs containing TTTT control have been excluded.
 
     ## Can i view the source code for this website?
     Sure, it is available on [GitHub](https://github.com/Luk13Mad/visualization_POLII)  \n
