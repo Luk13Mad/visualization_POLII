@@ -1,7 +1,7 @@
 import streamlit as st
 
 def graphics_main():
-    st.markdown("# **Contact Information**")
+    st.markdown("## **Contact Information**")
 
     st.markdown('''
     **Braun Lab**:  \n
