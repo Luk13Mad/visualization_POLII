@@ -2,8 +2,8 @@ import streamlit as st
 import altair as alt
 from PIL import Image
 import numpy as np
+import pandas as pd
 import networkx as nx
-import nx_altair as nxa
 import util
 
 #main graphics function
@@ -235,11 +235,80 @@ def display_networkgraph(data):
             node_distance.update({s:v["weight"]})
     nx.set_node_attributes(G,node_distance,"distance")
 
-    network = nxa.draw_networkx(G=G,pos=pos,node_tooltip = ['name'],
-                                node_label = "name",node_color="distance",
-                                font_color = "black",font_size = 18)
-    network.layer[-1] = network.layer[-1].encode(tooltip = "name:N") #manually update encoding, only displays name as tooltip
-    network.layer[1] = network.layer[1].encode(color = alt.Color("distance",title = "Amount")) #manually adjust title of legend
+    st.markdown(f"Number of nodes: n = {G.number_of_nodes()}")
+    draw_network(graph = G,position = pos,central_gene = gene)
 
-    st.markdown(f"Number of nodes: n = {G.number_of_nodes()}  \n Node colors represent amount of constructs within thresholds.")
-    st.altair_chart(network, use_container_width=True)
+def draw_network(graph,position,central_gene):
+    '''custom draw network function'''
+    edges = draw_edges(position,central_gene)
+    nodes = draw_nodes(graph,position)
+    labels = draw_labels(position)
+
+    network_graph = edges + nodes +labels
+    st.altair_chart(network_graph, use_container_width=True)
+
+def draw_labels(position):
+    '''draw gene names over nodes'''
+    x,y,label = [],[],[]
+    for k,v in position.items():
+        x.append(v[0])
+        y.append(v[1])
+        label.append(k)
+
+    data = pd.DataFrame({"x":x,"y":y,"label":label})
+
+    label_chart = alt.Chart(data).mark_text(fontStyle = "bold").encode(
+        x=alt.X('x', axis=alt.Axis(title='', grid=False, labels=False, ticks=False)),
+        y=alt.Y('y', axis=alt.Axis(title='', grid=False, labels=False, ticks=False)),
+        text = "label",
+        tooltip = alt.value(None))
+
+    return label_chart
+
+def draw_nodes(graph,position):
+    '''draw nodes with color'''
+    node_dict = graph.nodes()
+    x,y,amount = [],[],[]
+    for k,v in position.items():
+        x.append(v[0])
+        y.append(v[1])
+        amount.append(node_dict[k]["distance"])
+
+    data = pd.DataFrame({"x":x,"y":y,"amount":amount})
+
+    node_chart = alt.Chart(data).mark_point().encode(
+        x=alt.X('x', axis=alt.Axis(title='', grid=False, labels=False, ticks=False)),
+        y=alt.Y('y', axis=alt.Axis(title='', grid=False, labels=False, ticks=False)),
+        color = alt.Color("amount:O",scale = alt.Scale(domain = [x for x in range(0,data.amount.max()+1,1)],
+                                                   scheme = "category10",type = "identity"),
+                                                   title = "Amount"),
+        size = alt.value(300),
+        fill = alt.Color("amount:O",scale = alt.Scale(domain = [x for x in range(0,data.amount.max()+1,1)],
+                                                   scheme = "category10",type = "identity"),
+                                                   title = "Amount"),
+        opacity = alt.value(1),
+        tooltip = alt.value(None))
+
+    return node_chart
+
+def draw_edges(position,central_gene):
+    '''draw edges in background of network graph'''
+
+    x,y,x2,y2 = [],[],[],[]
+    for k,v in position.items():
+        if k != central_gene:
+            x.append(position[central_gene][0])
+            y.append(position[central_gene][1])
+            x2.append(v[0])
+            y2.append(v[1])
+    data = pd.DataFrame({"x":x,"y":y,"x2":x2,"y2":y2})
+
+    edge_chart = alt.Chart(data).mark_rule().encode(
+        x=alt.X('x', axis=alt.Axis(title='', grid=False, labels=False, ticks=False)),
+        y=alt.Y('y', axis=alt.Axis(title='', grid=False, labels=False, ticks=False)),
+        x2 = "x2",
+        y2 = "y2",
+        color = alt.value("grey"),
+        tooltip = alt.value(None))
+    
+    return edge_chart
