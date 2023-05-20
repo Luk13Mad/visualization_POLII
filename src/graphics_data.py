@@ -261,7 +261,7 @@ def draw_labels(position):
         x=alt.X('x', axis=alt.Axis(title='', grid=False, labels=False, ticks=False)),
         y=alt.Y('y', axis=alt.Axis(title='', grid=False, labels=False, ticks=False)),
         text = "label",
-        tooltip = alt.value(None))
+        tooltip = ["label"])
 
     return label_chart
 
