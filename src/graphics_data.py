@@ -10,16 +10,13 @@ import util
 #handle layout here
 def graphics_main(data):
 
-    tab1,tab2,tab3 = st.tabs(["Network graph","Raw data","Additional graphics"])
+    tab1,tab2 = st.tabs(["Network graph","Raw data"])
     
     with tab1:
         display_networkgraph(data)
 
     with tab2:
         display_dataframe_bargraph(data)
-
-    with tab3:
-        display_additional_graphics()
 
 #display dataframe
 #make interaction selection
@@ -95,10 +92,6 @@ def display_dataframe_bargraph(data):
         display_dLFC_bargraph(bardata)
     else:
         st.markdown("**For performance reasons no bargraph will be plotted if for either spot all genes are selected.**")
-
-
-def display_additional_graphics():
-    st.image(Image.open("data/puppies.jpg"),caption = "The description will be here, until then enjoy these puppies.")
         
 
 def display_big_bargraph(bardata):
@@ -108,8 +101,8 @@ def display_big_bargraph(bardata):
                             ).groupby(
                                 "variable"
                             ).agg({"value" : np.mean}).reset_index()
-                    ).mark_bar().encode(
-                            x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"],title = None),
+                    ).mark_bar(size=40).encode(
+                            x = alt.X("variable",sort = ["LFC(A)","LFC(B)","LFC(A,B)_expected","LFC(A,B)_observed"],title = None,axis=alt.Axis(labelAngle=0)),
                             y = alt.Y("value",title = "LFC"),
                             tooltip = alt.value(None),
                             color = alt.Color("variable",
@@ -135,8 +128,8 @@ def display_dLFC_bargraph(bardata):
                                 value_vars = ["dLFC(A,B)"]).groupby("variable").agg({"value" : np.mean}).reset_index()
     agg_bardata["color"] = agg_bardata.loc[:,"value"].apply(lambda x: "sickness" if x <= -0.5 else ("buffering" if x >= 0.5 else "neutral"))
 
-    bar_dLFC = alt.Chart(agg_bardata).mark_bar().encode(
-                            x = alt.X("variable",title = None),
+    bar_dLFC = alt.Chart(agg_bardata).mark_bar(size=40).encode(
+                            x = alt.X("variable",title = None,axis=alt.Axis(labelAngle=0)),
                             y = alt.Y("value",title = "dLFC"),
                             tooltip = alt.value(None),
                             color = alt.Color("color:N",scale = alt.Scale(
@@ -175,6 +168,7 @@ def display_networkgraph(data):
                              step = 0.001,key = "network_slider_selected",
                              help = "LFC range of crRNAs for selected gene. We recommend to exclude highly essential crRNAs (large negative values) from the analysis. ")
     
+    st.write("#")
 
     LFC_other_min = float(np.nanmin((data.loc[mask_geneA,"LFC(B)"].min(),data.loc[mask_geneB,"LFC(A)"].min())))
     LFC_other_max = float(np.nanmax((data.loc[mask_geneA,"LFC(B)"].max(),data.loc[mask_geneB,"LFC(A)"].max())))
@@ -277,11 +271,11 @@ def draw_nodes(graph,position):
         y=alt.Y('y', axis=alt.Axis(title='', grid=False, labels=False, ticks=False)),
         color = alt.Color("amount:O",scale = alt.Scale(domain = [x for x in range(0,data.amount.max()+1,1)],
                                                    scheme = "category10",type = "identity"),
-                                                   title = "Amount"),
+                                                   title = "# supporting crRNA pairs"),
         size = alt.value(300),
         fill = alt.Color("amount:O",scale = alt.Scale(domain = [x for x in range(0,data.amount.max()+1,1)],
                                                    scheme = "category10",type = "identity"),
-                                                   title = "Amount"),
+                                                   title = "# supporting crRNA pairs"),
         opacity = alt.value(1),
         tooltip = alt.value(None))
 

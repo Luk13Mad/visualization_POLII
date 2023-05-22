@@ -19,16 +19,7 @@ Aberrant transcription is a hallmark of many diseases such as cancer, ageing or 
     tab1,tab2,tab3,tab4 = st.tabs(["Drugging Transcription","Transcription Cycle","Manual","FAQ"])
 
     with tab1:
-        st.markdown('''
-        ### Dysregulated gene expression is druggable.  
-Gene expression dysregulation is a hallmark of most human diseases – including cancer. Transcription is tightly regulated through a concerted action of regulatory factors such as transcriptional cyclin-depending kinases (tCDKs) – many of which are druggable. Many small-molecule inhibitor targeting transcription-associated processes are now evaluated (pre)clinically, but frequently lack biomarkers for patient stratitication.
-
-### Unexpected relationships between transcription-related pathways.  
-We developed a Cas13 platform for multidimensional gene perturbation by guided RNA cleavage, which enabled the discovery of gene-dosage dependencies and higher-order genetic interaction scenarios. We performed massively parallel GI screens across three cellular models, multiple time-points, and 47,727 pairwise perturbations. The resulting complex interactomes enabled the discovery of unexpected relationships between transcription-related pathway, many of which are druggable.
-
-### Dysregulated gene expression: Fueling oncogenesis, but eliciting actionable dependencies.  
-Cancers support oncogenic signaling by altering specific transcription stages – but as a side-effect elicit precise and actionable molecular dependencies. We here provide a detailed atlas of such vulnerabilities, each assigned to distinct stages of dysregulated transcription
-        ''')
+        display_drugging_transcription()
 
     with tab2:
         display_introduction()
@@ -40,6 +31,18 @@ Cancers support oncogenic signaling by altering specific transcription stages �
     with tab4:
         display_FAQ()
 
+def display_drugging_transcription():
+    st.markdown('''
+        ### Dysregulated gene expression is druggable.  
+Gene expression dysregulation is a hallmark of most human diseases – including cancer. Transcription is tightly regulated through a concerted action of regulatory factors such as transcriptional cyclin-depending kinases (tCDKs) – many of which are druggable. Many small-molecule inhibitor targeting transcription-associated processes are now evaluated (pre)clinically, but frequently lack biomarkers for patient stratitication.
+
+### Unexpected relationships between transcription-related pathways.  
+We developed a Cas13 platform for multidimensional gene perturbation by guided RNA cleavage, which enabled the discovery of gene-dosage dependencies and higher-order genetic interaction scenarios. We performed massively parallel GI screens across three cellular models, multiple time-points, and 47,727 pairwise perturbations. The resulting complex interactomes enabled the discovery of unexpected relationships between transcription-related pathway, many of which are druggable.
+
+### Dysregulated gene expression: Fueling oncogenesis, but eliciting actionable dependencies.  
+Cancers support oncogenic signaling by altering specific transcription stages – but as a side-effect elicit precise and actionable molecular dependencies. We here provide a detailed atlas of such vulnerabilities, each assigned to distinct stages of dysregulated transcription
+        ''')
+
 
 def display_introduction():
 
@@ -47,20 +50,9 @@ def display_introduction():
     Transcription regulation for most protein-coding genes ultimately converges on changes in Pol II activity, which is coordinated through a concerted action of transcriptional CDKs (tCDKs). Mimicking the cell cycle, tCDKs regulate Pol II in a series of mono-directional stages collectively known as the transcription cycle.
     ''')
 
-    with open("data/introduction_video.mp4","rb") as video:
-        st.video(video.read())
-
-
-    st.markdown('''
-    ### Dysregulated gene expression is druggable.  \n
-    Gene expression dysregulation is a hallmark of most human diseases – including cancer. Transcription is tightly regulated through a concerted action of regulatory factors such as transcriptional cyclin-depending kinases (tCDKs) – many of which are druggable. Many small-molecule inhibitor targeting transcription-associated processes are now evaluated (pre)clinically, but frequently lack biomarkers for patient stratitication. 
-
-    ### Unexpected relationships between transcription-related pathways.  \n
-    We developed a Cas13 platform for multidimensional gene perturbation by guided RNA cleavage, which enabled the discovery of gene-dosage dependencies and higher-order genetic interaction scenarios. We performed massively parallel GI screens across three cellular models, multiple time-points, and 47,727 pairwise perturbations. The resulting complex interactomes enabled the discovery of unexpected relationships between transcription-related pathway, many of which are druggable. 
-
-    ### Dysregulated gene expression: Fueling oncogenesis, but eliciting actionable dependencies.  \n
-    Cancers support oncogenic signaling by altering specific transcription stages – but as a side-effect elicit precise and actionable molecular dependencies. We here provide a detailed atlas of such vulnerabilities, each assigned to distinct stages of dysregulated transcription.
-    ''')
+    with st.expander("Introduction video"):
+        with open("data/introduction_video.mp4","rb") as video:
+            st.video(video.read())
 
 def display_FAQ():
 
