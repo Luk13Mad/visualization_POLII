@@ -9,20 +9,16 @@ import util
 #main graphics function
 #handle layout here
 def graphics_main(data):
-    st.markdown("## **Data exploration**")
 
     tab1,tab2,tab3 = st.tabs(["Network graph","Raw data","Additional graphics"])
     
     with tab1:
-        st.markdown("### Network graph :")
         display_networkgraph(data)
 
     with tab2:
-        st.markdown("### Raw data table :")
         display_dataframe_bargraph(data)
 
     with tab3:
-        st.markdown("### Additional graphics :")
         display_additional_graphics()
 
 #display dataframe
