@@ -3,6 +3,12 @@ import util
 
 
 def graphics_main():
+    hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        </style>
+        """
+    st.markdown(hide_menu_style, unsafe_allow_html=True) #removes top right menu
 
     with st.container():
 
@@ -56,7 +62,7 @@ def display_introduction():
 
 def display_FAQ():
 
-    with st.expander("### How can i contact you for suggestions or comments?"):
+    with st.expander("### How can I contact you for suggestions or comments?"):
         st.write('''
     Please refer to the contact information [here](/Contact_Info)
         ''')
@@ -66,7 +72,7 @@ def display_FAQ():
     No, the constructs containing TTTT control have been excluded.
         ''')
 
-    with st.expander("### Can i view the source code for this website?"):
+    with st.expander("### Can I view the source code for this website?"):
         st.write('''
     Sure, it is available on [GitHub](https://github.com/Luk13Mad/visualization_POLII)
         ''')
@@ -127,7 +133,7 @@ def display_FAQ():
     We engineered some crRNAs in spot 1 to contain a Polymerase III transcriptional inactivator. Our idea here was to create some super-strong buffering events, which were meant to act as positive controls in our screen. They are biologically meaningless and should therefore be excluded from most analyses. 
         ''')
 
-    with st.expander("### Are you planning to extent this atlas? "):
+    with st.expander("### Are you planning to extend this atlas? "):
         st.write('''
     Absolutely! More cell lines, more transcription regulators, more druggable targets – stay tuned!
         ''')

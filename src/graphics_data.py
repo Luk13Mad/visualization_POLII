@@ -9,6 +9,12 @@ import util
 #main graphics function
 #handle layout here
 def graphics_main(data):
+    hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        </style>
+        """
+    st.markdown(hide_menu_style, unsafe_allow_html=True)#removes top right menu
 
     tab1,tab2 = st.tabs(["Network graph","Raw data"])
     
@@ -54,6 +60,7 @@ def display_dataframe_bargraph(data):
                              max_value = dLFC_max + 0.01,
                              value = (dLFC_min,dLFC_max),
                              step = 0.001,
+                             key = "dLFC1",
                              help = "negative dLFCs = synthetic sickness, positive dLFCs = buffering") 
     
     TTTT = st.checkbox('TTTT control',help = "If selected removes constructs with TTTT control.")

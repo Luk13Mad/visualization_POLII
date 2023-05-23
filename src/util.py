@@ -5,11 +5,6 @@ from PIL import Image
 import io
 
 
-'''
-dLFC slider in anderer Farbe
-'''
-
-
 #function loading data
 @st.cache_data
 def load_data(path):
