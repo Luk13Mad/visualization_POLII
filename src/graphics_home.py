@@ -10,10 +10,20 @@ def graphics_main():
         """
     st.markdown(hide_menu_style, unsafe_allow_html=True) #removes top right menu
 
-    with st.container():
+    
+    col1, col2, col3 = st.columns(3)
 
-        st.write(util.svg_helper(),unsafe_allow_html = True)
-        st.markdown("# **Actionable dependency atlas of dysregulated transcription**")
+    with col1:
+        st.write(' ')
+        #st.write(util.svg_helper(),unsafe_allow_html = True)
+
+    with col2:
+        st.image(util.read_png("data/main_pic4.png"),width=500)
+
+    with col3:
+        st.write(' ')
+    
+    st.markdown("# **Actionable dependency atlas of dysregulated transcription**")
 
     st.markdown('''
                     This atlas depicts actionable dependencies that arise from the dysregulation of transcription.  

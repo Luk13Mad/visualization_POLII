@@ -1,6 +1,5 @@
 import streamlit as st
 import altair as alt
-from PIL import Image
 import numpy as np
 import pandas as pd
 import networkx as nx
@@ -169,7 +168,7 @@ def display_networkgraph(data):
     LFC_selected_min = float(np.nanmin((data.loc[mask_geneA,"LFC(A)"].min(),data.loc[mask_geneB,"LFC(B)"].min())))
     LFC_selected_max = float(np.nanmax((data.loc[mask_geneA,"LFC(A)"].max(),data.loc[mask_geneB,"LFC(B)"].max())))
     
-    LFC_selected_cutoff_min,LFC_selected_cutoff_max = st.slider("LFC range of guides targeting the gene above",min_value = LFC_selected_min - 0.01,
+    LFC_selected_cutoff_min,LFC_selected_cutoff_max = st.slider("LFC range of single guides targeting the gene above",min_value = LFC_selected_min - 0.01,
                              max_value = LFC_selected_max + 0.01,
                              value = (LFC_selected_min,LFC_selected_max),
                              step = 0.001,key = "network_slider_selected",
@@ -187,7 +186,7 @@ def display_networkgraph(data):
     
     dLFC_min = float(data.loc[mask_gene,"dLFC(A,B)"].min())
     dLFC_max = float(data.loc[mask_gene,"dLFC(A,B)"].max())
-    dLFC_cutoff_min,dLFC_cutoff_max = st.slider("Cutoff dLFC (more negative --> stronger synthetic sickness)",min_value = dLFC_min - 0.01,
+    dLFC_cutoff_min,dLFC_cutoff_max = st.slider("Cutoff dLFC (more negative &rarr; stronger synthetic sickness)",min_value = dLFC_min - 0.01,
                              max_value = dLFC_max + 0.01,
                              value = (dLFC_min,dLFC_max),
                              step = 0.001,
