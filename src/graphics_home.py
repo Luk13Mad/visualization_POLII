@@ -13,7 +13,6 @@ def graphics_main():
     with st.container():
 
         st.write(util.svg_helper(),unsafe_allow_html = True)
-        #st.image(util.read_png("data/main_logo.png"))
         st.markdown("# **Actionable dependency atlas of dysregulated transcription**")
 
     st.markdown('''
