@@ -11,17 +11,9 @@ def graphics_main():
     st.markdown(hide_menu_style, unsafe_allow_html=True) #removes top right menu
 
     
-    col1, col2, col3 = st.columns(3)
+    #st.write(util.svg_helper(),unsafe_allow_html = True)
 
-    with col1:
-        st.write(' ')
-        #st.write(util.svg_helper(),unsafe_allow_html = True)
-
-    with col2:
-        st.image(util.read_png("data/main_pic4.png"),width=500)
-
-    with col3:
-        st.write(' ')
+    st.image(util.read_png("data/main_pic4.png"),width=500)
     
     st.markdown("# **Actionable dependency atlas of dysregulated transcription**")
 
@@ -37,12 +29,11 @@ Aberrant transcription is a hallmark of many diseases such as cancer, ageing or 
         display_drugging_transcription()
 
     with tab2:
-        display_introduction()
+        display_transcription_cycle()
 
     with tab3:
-        st.markdown('''
-                    TODO
-                    ''')
+        display_manual()
+
     with tab4:
         display_FAQ()
 
@@ -58,15 +49,20 @@ We developed a Cas13 platform for multidimensional gene perturbation by guided R
 Cancers support oncogenic signaling by altering specific transcription stages – but as a side-effect elicit precise and actionable molecular dependencies. We here provide a detailed atlas of such vulnerabilities, each assigned to distinct stages of dysregulated transcription
         ''')
 
+def display_manual():
 
-def display_introduction():
+    with open("data/manual_video.mp4","rb") as video:
+        st.video(video.read())
+    st.markdown("The video was partly generated using Servier Medical Art, provided by Servier, licensed under a Creative Commons Attribution 3.0 unported license.")
+
+def display_transcription_cycle():
 
     st.markdown('''
     Transcription regulation for most protein-coding genes ultimately converges on changes in Pol II activity, which is coordinated through a concerted action of transcriptional CDKs (tCDKs). Mimicking the cell cycle, tCDKs regulate Pol II in a series of mono-directional stages collectively known as the transcription cycle.
     ''')
 
-    with st.expander("Introduction video"):
-        with open("data/introduction_video.mp4","rb") as video:
+    with st.expander("Video"):
+        with open("data/transcription_cycle_video.mp4","rb") as video:
             st.video(video.read())
 
 def display_FAQ():
