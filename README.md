@@ -11,7 +11,7 @@ You can also use the following command to install all dependencies: </br>
 pip install -r requirements.txt
 ```
 
-To run the app locally place the data in the data folder and run : </br>
+To run the app locally, clone this repository and run : </br>
 ```
 streamlit run src/About.py
 ```

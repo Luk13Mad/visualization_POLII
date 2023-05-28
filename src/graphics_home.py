@@ -51,7 +51,7 @@ Cancers support oncogenic signaling by altering specific transcription stages â€
 
 def display_manual():
 
-    with open("data/manual_video.mp4","rb") as video:
+    with open("data/manual_video_720p.mp4","rb") as video:
         st.video(video.read())
     st.markdown("The video was partly generated using Servier Medical Art, provided by Servier, licensed under a Creative Commons Attribution 3.0 unported license.")
 
