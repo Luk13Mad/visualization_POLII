@@ -197,10 +197,14 @@ def display_networkgraph(data):
     combined_mask = mask_TTTT  & mask_gene
     data = data.loc[combined_mask,["Gene(A)","Gene(B)","dLFC(A,B)"]] #filter only for the relevant pairs
 
+    mask_geneA = data.loc[:,"Gene(A)"] == gene
+    mask_geneB = data.loc[:,"Gene(B)"] == gene
     #filter only for selected gene
     mask_cutoff_selected = ((data.loc[:,"LFC(A)"] >= LFC_selected_cutoff_min) & (data.loc[:,"LFC(A)"] <= LFC_selected_cutoff_max) & mask_geneA) | ((data.loc[:,"LFC(B)"] >= LFC_selected_cutoff_min) & (data.loc[:,"LFC(B)"] <= LFC_selected_cutoff_max) & mask_geneB)
     data = data.loc[mask_cutoff_selected,["Gene(A)","Gene(B)","dLFC(A,B)"]]
 
+    mask_geneA = data.loc[:,"Gene(A)"] == gene
+    mask_geneB = data.loc[:,"Gene(B)"] == gene
     mask_cutoff_other = ((data.loc[:,"LFC(B)"] >= LFC_other_cutoff_min) & (data.loc[:,"LFC(B)"] <= LFC_other_cutoff_max) & mask_geneA) | ((data.loc[:,"LFC(A)"] >= LFC_other_cutoff_min) & (data.loc[:,"LFC(A)"] <= LFC_other_cutoff_max) & mask_geneB)
     data = data.loc[mask_cutoff_other,["Gene(A)","Gene(B)","dLFC(A,B)"]]
 
