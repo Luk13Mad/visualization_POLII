@@ -194,18 +194,18 @@ def display_networkgraph(data):
                              help = "negative dLFCs = synthetic sickness, positive dLFCs = buffering") 
     
     mask_TTTT = data.loc[:,"TTTT control"] == "no"
-    combined_mask = mask_TTTT  & mask_gene
-    data = data.loc[combined_mask,["Gene(A)","Gene(B)","dLFC(A,B)"]] #filter only for the relevant pairs
+    combined_mask = mask_TTTT & mask_gene
+    data = data.loc[combined_mask,["Gene(A)","Gene(B)","LFC(A)","LFC(B)","dLFC(A,B)"]] #filter only for the relevant pairs
 
     #filter only for selected gene
     mask_cutoff_selected = ((data.loc[:,"LFC(A)"] >= LFC_selected_cutoff_min) & (data.loc[:,"LFC(A)"] <= LFC_selected_cutoff_max) & (data.loc[:,"Gene(A)"] == gene)) | ((data.loc[:,"LFC(B)"] >= LFC_selected_cutoff_min) & (data.loc[:,"LFC(B)"] <= LFC_selected_cutoff_max) & (data.loc[:,"Gene(B)"] == gene))
-    data = data.loc[mask_cutoff_selected,["Gene(A)","Gene(B)","dLFC(A,B)"]]
+    data = data.loc[mask_cutoff_selected,["Gene(A)","Gene(B)","LFC(A)","LFC(B)","dLFC(A,B)"]]
 
     mask_cutoff_other = ((data.loc[:,"LFC(B)"] >= LFC_other_cutoff_min) & (data.loc[:,"LFC(B)"] <= LFC_other_cutoff_max) & (data.loc[:,"Gene(A)"] == gene)) | ((data.loc[:,"LFC(A)"] >= LFC_other_cutoff_min) & (data.loc[:,"LFC(A)"] <= LFC_other_cutoff_max) & (data.loc[:,"Gene(B)"] == gene))
-    data = data.loc[mask_cutoff_other,["Gene(A)","Gene(B)","dLFC(A,B)"]]
+    data = data.loc[mask_cutoff_other,["Gene(A)","Gene(B)","LFC(A)","LFC(B)","dLFC(A,B)"]]
 
     mask_cutoff_dLFC = (data.loc[:,"dLFC(A,B)"] >= dLFC_cutoff_min) & (data.loc[:,"dLFC(A,B)"] <= dLFC_cutoff_max)
-    data = data.loc[mask_cutoff_dLFC,["Gene(A)","Gene(B)","dLFC(A,B)"]]
+    data = data.loc[mask_cutoff_dLFC,["Gene(A)","Gene(B)","LFC(A)","LFC(B)","dLFC(A,B)"]]
     
     edgelist = util.aggregate_df_to_edgelist(df = data, maingene = gene)
 
